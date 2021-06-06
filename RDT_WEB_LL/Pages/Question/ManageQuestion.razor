@@ -1,4 +1,6 @@
-﻿@page "/manage/questions" 
+﻿@page "/manage/questions"
+
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>Manage Question</h3>
 

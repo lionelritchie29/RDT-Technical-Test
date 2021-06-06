@@ -1,4 +1,6 @@
-﻿@page "/test" 
+﻿@page "/test"
+
+@attribute [Authorize(Roles = "Admin, Participant")]
 
 <h3>Test</h3>
 

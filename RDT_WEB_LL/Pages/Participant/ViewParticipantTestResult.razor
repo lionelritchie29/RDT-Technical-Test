@@ -1,4 +1,6 @@
-﻿@page "/manage/participants/{id}/result" 
+﻿@page "/manage/participants/{id}/result"
+
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>ViewTestResult for @Id</h3>
 

@@ -1,4 +1,6 @@
-﻿@page "/manage/participants/{id}/status" 
+﻿@page "/manage/participants/{id}/status"
+
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>ViewParticipantTestStatus for @Id</h3>
 

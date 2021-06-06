@@ -1,5 +1,7 @@
 ﻿@page "/manage/participants" 
 
+@attribute [Authorize(Roles = "Admin")]
+
 <h3>ManageParticipant</h3>
 
 @code {
