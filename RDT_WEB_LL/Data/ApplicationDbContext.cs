@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RDT_WEB_LL.Models;
 using System;
@@ -28,6 +29,8 @@ namespace RDT_WEB_LL.Data
             SeedQuestionType(modelBuilder);
             SeedQuestions(modelBuilder);
             SeedPossibleAnswers(modelBuilder);
+            SeedUser(modelBuilder);
+            SeedRole(modelBuilder);
         }
 
         private void SeedQuestionType(ModelBuilder modelBuilder)
@@ -78,6 +81,42 @@ namespace RDT_WEB_LL.Data
 
                 new PossibleAnswer { Id = 16, QuestionId = 5, Answer = "true", IsCorrect = false},
                 new PossibleAnswer { Id = 17, QuestionId = 5, Answer = "false", IsCorrect = true}
+                );
+        }
+
+        private void SeedUser(ModelBuilder modelBuilder)
+        {
+            var hasher = new PasswordHasher<IdentityUser>();
+
+            modelBuilder.Entity<IdentityUser>().HasData(
+                new IdentityUser { 
+                    Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
+                    UserName = "Admin",
+                    Email = "admin@mail.com",
+                    PasswordHash = hasher.HashPassword(null, "Admin123!"),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                },
+
+                new IdentityUser
+                {
+                    Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
+                    UserName = "Brandon Julio",
+                    Email = "brandon@mail.com",
+                    PasswordHash = hasher.HashPassword(null, "Brandon123!"),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                });
+        }
+
+        private void SeedRole(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IdentityRole>().HasData(
+               new IdentityRole { Id = "admin", Name = "Admin"},
+               new IdentityRole { Id = "participant", Name = "Participant"}
+               );
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string> { RoleId = "admin", UserId = "af3246f8-2bc5-404b-8212-3a5005c98790" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec" }
                 );
         }
     }
