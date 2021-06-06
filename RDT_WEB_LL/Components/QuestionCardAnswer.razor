@@ -5,15 +5,15 @@
     {
         <AnswerRadioInput questionTypeId=@question.QuestionType.Id answers=@question.PossibleAnswers></AnswerRadioInput>
     }
-    else if (question.QuestionType.Id == (int)QuestionTypeEnum.SelectFromList)
+    else if (IsSelectFromList())
     {
         <AnswerSelectFromListInput answers=@question.PossibleAnswers></AnswerSelectFromListInput>
     }
-    else if (question.QuestionType.Id == (int)QuestionTypeEnum.Essay)
+    else if (IsEssay())
     {
         <AnswerEssayInput></AnswerEssayInput>
     }
-    else if (question.QuestionType.Id == (int)QuestionTypeEnum.FileUpload)
+    else if (IsFileUpload())
     {
         <AnswerFileUploadInput></AnswerFileUploadInput>
     }
@@ -26,5 +26,20 @@
     private bool IsMultipleChoiceOrBoolean()
     {
         return question.QuestionType.Id == (int)QuestionTypeEnum.MultipleChoice || question.QuestionType.Id == (int)QuestionTypeEnum.Boolean;
+    }
+
+    private bool IsSelectFromList()
+    {
+        return question.QuestionType.Id == (int)QuestionTypeEnum.SelectFromList;
+    }
+
+    private bool IsEssay()
+    {
+        return question.QuestionType.Id == (int)QuestionTypeEnum.Essay;
+    }
+
+    private bool IsFileUpload()
+    {
+        return question.QuestionType.Id == (int)QuestionTypeEnum.FileUpload;
     }
 }
