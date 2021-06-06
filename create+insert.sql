@@ -1,0 +1,4 @@
+CREATE DATABASE XYZ_Test_App
+
+GO
+USE XYZ_Test_App
