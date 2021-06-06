@@ -1,0 +1,16 @@
+﻿@using RDT_WEB_LL.Models
+
+<p class="card-text mb-5">@question.QuestionText</p>
+<button type="button" class="btn btn-primary position-absolute" @oninput="OnShowDetail" style="left: 1rem; bottom: 0.5rem">Show details</button>
+
+@code {
+    [Parameter]
+    public Question question { get; set; }
+    public EventCallback<int> DetailQuestionChanged { get; set; }
+
+    private Task OnShowDetail(ChangeEventArgs e)
+    {
+        int id = question.Id;
+        return DetailQuestionChanged.InvokeAsync(id);
+    }
+}

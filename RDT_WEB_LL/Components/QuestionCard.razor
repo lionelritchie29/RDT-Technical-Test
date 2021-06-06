@@ -1,0 +1,21 @@
+﻿@using RDT_WEB_LL.Models
+
+<div class="card h-100">
+    <div class="card-header">
+        Question @count (@question.QuestionType.Type)
+    </div>
+    <div class="card-body">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public int count { get; set; }
+
+    [Parameter]
+    public Question question { get; set; }
+}
