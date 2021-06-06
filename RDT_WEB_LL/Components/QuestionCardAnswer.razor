@@ -1,0 +1,30 @@
+﻿@using RDT_WEB_LL.Models
+
+<div class="px-4">
+    @if (IsMultipleChoiceOrBoolean())
+    {
+        <AnswerRadioInput questionTypeId=@question.QuestionType.Id answers=@question.PossibleAnswers></AnswerRadioInput>
+    }
+    else if (question.QuestionType.Id == (int)QuestionTypeEnum.SelectFromList)
+    {
+        <AnswerSelectFromListInput answers=@question.PossibleAnswers></AnswerSelectFromListInput>
+    }
+    else if (question.QuestionType.Id == (int)QuestionTypeEnum.Essay)
+    {
+        <AnswerEssayInput></AnswerEssayInput>
+    }
+    else if (question.QuestionType.Id == (int)QuestionTypeEnum.FileUpload)
+    {
+        <AnswerFileUploadInput></AnswerFileUploadInput>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question question { get; set; }
+
+    private bool IsMultipleChoiceOrBoolean()
+    {
+        return question.QuestionType.Id == (int)QuestionTypeEnum.MultipleChoice || question.QuestionType.Id == (int)QuestionTypeEnum.Boolean;
+    }
+}

@@ -1,0 +1,25 @@
+﻿@using RDT_WEB_LL.Models
+
+@for (var i = 0; i < answers.Count(); i++)
+{
+    char choiceChar = (char)(i + 65);
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+        <label class="form-check-label" for="exampleRadios1">
+            @ShowChoiceAlphabet(i) @answers[i].Answer
+        </label>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<PossibleAnswer> answers { get; set; }
+
+    [Parameter]
+    public int questionTypeId { get; set; }
+
+    private char ShowChoiceAlphabet(int idx)
+    {
+        return questionTypeId == (int)QuestionTypeEnum.MultipleChoice ? (char)(idx + 65) : ' ';
+    }
+}

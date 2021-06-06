@@ -19,7 +19,12 @@ namespace RDT_WEB_LL.Services
 
         public async Task<List<Question>> GetAll()
         {
-            return await _context.Questions.Include(q => q.QuestionType).ToListAsync();
+            List<Question> questions = await _context.Questions.Include(q => q.QuestionType).ToListAsync();
+            foreach (var q in questions)
+            {
+                q.PossibleAnswers = _context.PossibleAnswers.Where(ans => ans.QuestionId == q.Id).ToList();
+            }
+            return questions;
         }
     }
 }

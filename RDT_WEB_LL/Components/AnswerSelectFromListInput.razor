@@ -1,0 +1,13 @@
+﻿@using RDT_WEB_LL.Models
+
+<select id="inputState" class="form-control">
+    @for (var i = 0; i < answers.Count(); i++)
+    {
+        <option>@answers[i].Answer</option>
+    }
+</select>
+
+@code {
+    [Parameter]
+    public List<PossibleAnswer> answers { get; set; }
+}

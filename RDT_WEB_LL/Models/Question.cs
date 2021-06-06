@@ -10,6 +10,7 @@ namespace RDT_WEB_LL.Models
         public int Id { get; set; }
         public int QuestionTypeId { get; set; }
         public QuestionType QuestionType { get; set; }
+        public List<PossibleAnswer> PossibleAnswers { get; set; }
         public string QuestionText { get; set; }
         public bool HasCorrectAnswer { get; set; }
     }
