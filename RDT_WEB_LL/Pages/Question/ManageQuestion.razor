@@ -11,7 +11,9 @@
 <div class="d-flex">
     <h3>Manage Questions</h3>
     <div class="ml-3">
-        <a href="" class="btn btn-primary">Add new question</a>
+        <NavLink class="btn btn-primary" href="manage/questions/add" Match="NavLinkMatch.All">
+            Add new question
+        </NavLink>
     </div>
 </div>
 
@@ -46,13 +48,12 @@ else
 @code {
     List<Question> questions;
 
-    Question selectedQuestion;
+    Question selectedQuestion = null;
 
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("Init");
         questions = await Task.Run(() => questionService.GetAll());
-        selectedQuestion = questions[0];
     }
 
     protected void OnShowQuestionDetail(int id)

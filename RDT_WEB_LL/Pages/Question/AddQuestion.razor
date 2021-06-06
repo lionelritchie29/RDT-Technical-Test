@@ -1,0 +1,50 @@
+﻿@page "/manage/questions/add"
+
+<h3>Add New Question</h3>
+
+<div class="card">
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <label>Question text</label>
+                <input type="text" class="form-control" placeholder="Enter question">
+            </div>
+            <div class="form-group">
+                <label>Question Type</label>
+                <select class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+
+            <div id="possible-answer-input-container">
+                <label>Possible Answer</label>
+                <div class="form-group">
+                    @for (var i = 0; i < possibleAnswerInputcount; i++)
+                    {
+                        <input type="text" class="form-control mb-2" placeholder="Enter possible answer @(i+1)">
+
+                    }
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-primary" @onclick="OnAddMorePossibleAnswer" @onclick:preventDefault="true">Add more</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add question</button>
+        </form>
+    </div>
+</div>
+
+@code {
+    public int possibleAnswerInputcount = 1;
+
+    private void OnAddMorePossibleAnswer()
+    {
+        possibleAnswerInputcount++;
+    }
+}

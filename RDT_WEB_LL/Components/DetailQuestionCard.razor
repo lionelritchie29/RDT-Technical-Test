@@ -5,15 +5,25 @@
     <div class="card-header bg-primary text-white">
         Question preview
     </div>
-    <div class="card-body">
-        <p class="card-text">@question.QuestionText</p>
-    </div>
 
-    <QuestionCardAnswer question=@question></QuestionCardAnswer>
-    <div class="card-body">
-        <a class="btn btn-primary text-white">Update</a>
-        <a class="btn btn-danger text-white">Delete</a>
-    </div>
+    @if (question == null)
+    {
+        <div class="p-5 text-center">
+            <p>No question to be previewed</p>
+        </div>
+    }
+    else
+    {
+        <div class="card-body">
+            <p class="card-text">@question.QuestionText</p>
+        </div>
+
+        <QuestionCardAnswer question=@question></QuestionCardAnswer>
+        <div class="card-body">
+            <a class="btn btn-primary text-white">Update</a>
+            <a class="btn btn-danger text-white">Delete</a>
+        </div>
+    }
 </div>
 
 @code {
