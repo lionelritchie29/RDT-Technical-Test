@@ -8,7 +8,12 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Manage Questions</h3>
+<div class="d-flex">
+    <h3>Manage Questions</h3>
+    <div class="ml-3">
+        <a href="" class="btn btn-primary">Add new question</a>
+    </div>
+</div>
 
 @if (questions is null)
 {
