@@ -4,7 +4,7 @@
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Components
 
-@inject QuestionService questionService
+@inject IQuestionServices questionService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -22,35 +22,16 @@ else
                 @foreach (var q in questions)
                 {
                     <div class="col-4 mb-4">
-                        <QuestionCard count=@count question=@q>
-                            <QuestionCardManageContent question="@q"></QuestionCardManageContent>
+                        <QuestionCard question=@q>
+                            <QuestionCardManageContent question="@q" OnShowDetail="OnShowQuestionDetail"></QuestionCardManageContent>
                         </QuestionCard>
                     </div>
-
-                    count++;
                 }
             </div>
         </div>
         <div class="w-25 ml-3 pl-3 border-left border-secondary">
             <div class="mt-3">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-header bg-primary text-white">
-                        Selected Questions
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">@selectedQuestion.QuestionText</p>
-                    </div>
-
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
-                    <div class="card-body">
-                        <a class="btn btn-primary text-white">Update</a>
-                        <a class="btn btn-danger text-white">Delete</a>
-                    </div>
-                </div>
+                <DetailQuestionCard question=@selectedQuestion></DetailQuestionCard>
             </div>
         </div>
     </div>
@@ -58,14 +39,19 @@ else
 
 
 @code {
-    int count = 1;
     List<Question> questions;
 
     Question selectedQuestion;
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("Init");
         questions = await Task.Run(() => questionService.GetAll());
         selectedQuestion = questions[0];
+    }
+
+    protected void OnShowQuestionDetail(int id)
+    {
+        selectedQuestion = questions.Find(q => q.Id == id);
     }
 }

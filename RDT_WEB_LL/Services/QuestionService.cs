@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RDT_WEB_LL.Services
 {
-    public class QuestionService
+    public class QuestionService : IQuestionServices
     {
         private readonly ApplicationDbContext _context;
 
