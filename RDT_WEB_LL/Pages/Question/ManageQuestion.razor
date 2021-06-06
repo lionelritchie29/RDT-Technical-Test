@@ -1,11 +1,30 @@
 ﻿@page "/manage/questions"
 
+@using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Services
+
+@inject QuestionService questionService
+
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Manage Question</h3>
+<h3>Manage Questions</h3>
 
-test123 adasd
+@if (questions is null) 
+{ 
+    <p>Loading data...</p>
+} else
+{
+    @foreach(var question in questions)
+    {
+        <p>@question.QuestionText</p>
+    }
+}
 
 @code {
+    List<Question> questions;
 
+    protected override async Task OnInitializedAsync()
+    {
+        questions = await Task.Run(() => questionService.GetAll());
+    }
 }
