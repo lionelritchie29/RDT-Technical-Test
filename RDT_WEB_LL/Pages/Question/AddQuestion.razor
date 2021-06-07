@@ -1,62 +1,161 @@
 ﻿@page "/manage/questions/add"
 
-@using RDT_WEB_LL.Models.Form_Models 
+@using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Models.Form_Models
+@using RDT_WEB_LL.Services
+@using Microsoft.Extensions.Logging
+@using RDT_WEB_LL.Components.Question_Form
+
 @inject IJSRuntime JS
+@inject IQuestionTypeService qtService
+@inject IQuestionServices qService
+@inject ILogger<AddQuestion> logger
 
 <h3>Add New Question</h3>
 
 <div class="card">
     <div class="card-body">
-        <EditForm Model=@model>
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <label>Question text</label>
-                <InputText class="form-control" @bind-Value=@model.QuestionText placeholder="Enter question" />
-                <ValidationMessage For="() => model.QuestionText" />
-            </div>
-            <div class="form-group">
-                <label>Question Type</label>
-                <InputSelect @bind-Value=@model.QuestionType class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </InputSelect>
-            </div>
-
-            <div id="possible-answer-input-container">
-                <label>Possible Answer</label>
+        @if (questionTypes != null)
+        {
+            <EditForm OnSubmit=@OnNext EditContext=@editContext>
+                <ObjectGraphDataAnnotationsValidator />
                 <div class="form-group">
-                    @for (var i = 0; i < possibleAnswerInputcount; i++)
-                    {
-                        var j = i;
-                        addNewPossibleAnswerToModel();
-                        <InputText @bind-Value=@model.PossibleAnswers[j].Value class="form-control mb-2" placeholder="Enter possible answer" />
-                    }
+                    <label>Question text</label>
+                    <InputText class="form-control" @bind-Value=@model.QuestionText placeholder="Enter question" />
+                    <ValidationMessage For="() => model.QuestionText" />
                 </div>
-            </div>
+                <div class="form-group">
+                    <label>Question Type</label>
+                    <InputSelect @bind-Value=@model.QuestionTypeId name="questionType" class="form-control">
+                        <option value="" selected>---</option>
+                        @foreach (var type in questionTypes)
+                            {
+                            <option value=@type.Id>@type.Type</option>
+                            }
+                    </InputSelect>
+                    <ValidationMessage For="() => model.QuestionTypeId" />
+                </div>
 
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-primary" @onclick="OnAddMorePossibleAnswer" @onclick:preventDefault="true">Add more</button>
-            </div>
+                @if (model.QuestionTypeId != null && IsNotEssayOrFileUpload())
+                {
+                    <label>Possible Answer</label>
+                    <div class="form-group">
+                        @for (var i = 0; i < possibleAnswerInputcount; i++)
+                        {
+                            var j = i;
+                            <InputText @bind-Value=@model.PossibleAnswers[j].Value class="form-control mb-2" placeholder="Enter possible answer" />
+                            <ValidationMessage For="() => model.PossibleAnswers[j].Value" />
+                        }
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Add question</button>
-        </EditForm>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary" @onclick=@AddAnswerList @onclick:preventDefault="true">Add more</button>
+                    </div>
+                }
+
+
+                <input type="submit" class="btn btn-primary" value="Next">
+            </EditForm>
+        }
     </div>
 </div>
 
-@code {
-    public int possibleAnswerInputcount = 1;
-    AddQuestionFormModel model = new AddQuestionFormModel();
+@if (IsSecondStep)
+{
+    <QuestionFormChooseCorrectAnswer Model=@model OnAddQuestion=@AddNewQuestion/>
+}
 
-    private void OnAddMorePossibleAnswer()
+@code {
+    public EditContext editContext { get; set; }
+    public int possibleAnswerInputcount = 0;
+    AddQuestionFormModel model = new AddQuestionFormModel();
+    public List<QuestionType> questionTypes = null;
+    public bool IsSecondStep { get; set; } = false;
+
+    private void EditContext_OnFieldChanged(object sender, FieldChangedEventArgs e)
     {
-        possibleAnswerInputcount++;
+        if (e.FieldIdentifier.FieldName == "QuestionTypeId")
+        {
+            clearPossibleAnswerInput();
+            AddAnswerList();
+            IsSecondStep = false;
+        }
     }
 
-    private void addNewPossibleAnswerToModel()
+    protected override void OnInitialized()
     {
+        questionTypes = qtService.GetAll();
+        editContext = new EditContext(model);
+        editContext.OnFieldChanged += EditContext_OnFieldChanged;
+        AddAnswerList();
+    }
+
+    private void AddAnswerList()
+    {
+        if (possibleAnswerInputcount == 2 && IsBoolean()) return;
+        possibleAnswerInputcount++;
         model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = " " });
+        JS.InvokeVoidAsync("console.log", model.PossibleAnswers.Count());
+    }
+
+    private void OnNext(EditContext edt)
+    {
+        if (edt.Validate())
+        {
+            IsSecondStep = true;
+        }
+    }
+
+    private void AddNewQuestion()
+    {
+        if (string.IsNullOrEmpty(model.QuestionTypeId)) return;
+        var hasCorrectAnswer = IsNotEssayOrFileUpload();
+        List<PossibleAnswer> possibleAnswers = new List<PossibleAnswer>();
+
+        var newQuestion = new Question
+        {
+            QuestionText = model.QuestionText,
+            QuestionTypeId = int.Parse(model.QuestionTypeId),
+            HasCorrectAnswer = hasCorrectAnswer
+        };
+
+        int insertedQuestionId = qService.Add(newQuestion);
+
+        if (hasCorrectAnswer)
+        {
+            foreach (var ans in model.PossibleAnswers)
+            {
+                possibleAnswers.Add(new PossibleAnswer { Answer = ans.Value, IsCorrect = false, QuestionId = insertedQuestionId });
+            }
+            qService.AddAnswers(possibleAnswers);
+        }
+
+        clearForm();
+        IsSecondStep = false;
+        JS.InvokeVoidAsync("alert", "Succesfully added new question");
+    }
+
+    private bool IsNotEssayOrFileUpload()
+    {
+        if (string.IsNullOrEmpty(model.QuestionTypeId)) return false;
+        return int.Parse(model.QuestionTypeId) != (int)QuestionTypeEnum.Essay && int.Parse(model.QuestionTypeId) != (int)QuestionTypeEnum.FileUpload;
+    }
+
+    private void clearPossibleAnswerInput()
+    {
+        possibleAnswerInputcount = 0;
+        model.PossibleAnswers.Clear();
+    }
+
+    private bool IsBoolean()
+    {
+        return int.Parse(model.QuestionTypeId) == (int)QuestionTypeEnum.Boolean;
+    }
+
+    private void clearForm()
+    {
+        model.QuestionText = "";
+        model.QuestionTypeId = "";
+        model.PossibleAnswers = new List<PossibleAnswerFormModel>();
     }
 }

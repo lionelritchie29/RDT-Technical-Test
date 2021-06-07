@@ -8,12 +8,14 @@ namespace RDT_WEB_LL.Models.Form_Models
 {
     public class AddQuestionFormModel
     {
-        [Required]
+        [Required(ErrorMessage = "You must fill the question text")]
         public string QuestionText { get; set; }
 
-        public string QuestionType { get; set; }
+        [Required(ErrorMessage = "You must select a question type")]
+        public string QuestionTypeId { get; set; }
+        public bool HasCorrectAnswer { get; set; }
 
-
+        //[ValidateComplexType]
         public List<PossibleAnswerFormModel> PossibleAnswers { get; set; }
 
         public AddQuestionFormModel()

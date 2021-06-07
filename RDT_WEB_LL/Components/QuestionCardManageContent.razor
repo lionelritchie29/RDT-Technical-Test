@@ -10,9 +10,9 @@
     [Parameter]
     public EventCallback<int> OnShowDetail { get; set; }
 
-    private Task OnShowDetailClick()
+    private async Task OnShowDetailClick()
     {
         int id = question.Id;
-        return OnShowDetail.InvokeAsync(id);
+        await OnShowDetail.InvokeAsync(id);
     }
 }

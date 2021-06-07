@@ -1,0 +1,65 @@
+﻿@using RDT_WEB_LL.Models.Form_Models
+@using RDT_WEB_LL.Models 
+
+@inject IJSRuntime JS 
+
+<div class="card mt-3">
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(Model.QuestionTypeId) && IsEssayOrFileUpload())
+        {
+            <div class="text-center">No need to choose correct answer because your question type is either essay or file upload</div>
+        }
+        else
+        {
+            <form>
+                <div class="form-group">
+                    <label>Select correct answers</label>
+                    <select @bind=@SelectedCorrectAnsIdx class="form-control">
+                        <option value="">---</option>
+                        @for (var i = 0; i < Model.PossibleAnswers.Count(); i++)
+                        {
+                            int j = i;
+                            <option value=@j>@Model.PossibleAnswers[j].Value</option>
+                        }
+                    </select>
+                </div>
+            </form>
+        }
+        <button type="submit" class="btn btn-primary" @onclick=@OnAdd>Add question</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public AddQuestionFormModel Model { get; set; }
+
+    [Parameter]
+    public EventCallback<AddQuestionFormModel> OnAddQuestion { get; set; }
+
+    public string SelectedCorrectAnsIdx { get; set; }
+
+    private bool IsEssayOrFileUpload()
+    {
+        return int.Parse(Model.QuestionTypeId) == (int)QuestionTypeEnum.Essay || int.Parse(Model.QuestionTypeId) == (int)QuestionTypeEnum.FileUpload;
+    }
+
+    private async Task OnAdd()
+    {
+        if (IsEssayOrFileUpload())
+        {
+            await OnAddQuestion.InvokeAsync(Model);
+        } else
+        {
+            if (string.IsNullOrEmpty(SelectedCorrectAnsIdx))
+            {
+                await JS.InvokeVoidAsync("alert", "Please select a correct answer");
+            }
+            else
+            {
+                var idx = int.Parse(SelectedCorrectAnsIdx);
+                Model.PossibleAnswers[idx].IsCorrect = true;
+                await OnAddQuestion.InvokeAsync(Model);
+            }
+        }
+    }
+}

@@ -33,6 +33,7 @@ namespace RDT_WEB_LL
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IQuestionServices, QuestionService>();
+            services.AddScoped<IQuestionTypeService, QuestionTypeService>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

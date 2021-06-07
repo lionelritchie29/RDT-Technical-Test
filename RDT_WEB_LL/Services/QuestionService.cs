@@ -17,6 +17,20 @@ namespace RDT_WEB_LL.Services
             _context = context;
         }
 
+        public int Add(Question newQuestion)
+        {
+            _context.Questions.Add(newQuestion);
+            _context.SaveChanges();
+            return newQuestion.Id;
+        }
+
+        public int AddAnswers(List<PossibleAnswer> answers)
+        {
+            _context.PossibleAnswers.AddRange(answers.ToArray());
+            int status = _context.SaveChanges();
+            return status;
+        }
+
         public async Task<List<Question>> GetAll()
         {
             List<Question> questions = await _context.Questions.Include(q => q.QuestionType).ToListAsync();
