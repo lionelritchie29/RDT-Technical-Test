@@ -1,9 +1,35 @@
 ﻿@page "/test"
 
 @attribute [Authorize(Roles = "Admin, Participant")]
+@inject IQuestionServices questionService
 
-<h3>Test</h3>
+@using RDT_WEB_LL.Services
+@using RDT_WEB_LL.Components
+
+<h3>Nationality test</h3>
+
+<section class="container-fluid">
+    <form>
+        @for (var i = 0; i < questions.Count(); i++)
+        {
+            var j = i;
+            <QuestionCard question=@questions[j]>
+                <p>@(j+1).  @questions[j].QuestionText</p>
+                <QuestionCardAnswer question=@questions[j]></QuestionCardAnswer>
+            </QuestionCard>
+        }
+
+        <div class="d-flex justify-content-end mb-5">
+            <button type="submit" class="btn btn-success">Submit my answer</button>
+        </div>
+    </form>
+</section>
 
 @code {
+    public List<RDT_WEB_LL.Models.Question> questions { get; set; }
 
+    protected override void OnInitialized()
+    {
+        questions = questionService.GetAll();
+    }
 }
