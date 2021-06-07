@@ -9,7 +9,8 @@
 @inject IJSRuntime JS
 @inject IQuestionTypeService qtService
 @inject IQuestionServices qService
-@inject ILogger<AddQuestion> logger
+@inject NavigationManager NavigationManager
+
 
 <h3>Add New Question</h3>
 
@@ -62,7 +63,7 @@
 
 @if (IsSecondStep)
 {
-    <QuestionFormChooseCorrectAnswer Model=@model OnAddQuestion=@AddNewQuestion/>
+    <QuestionFormChooseCorrectAnswer Model=@model OnAddQuestion=@AddNewQuestion />
 }
 
 @code {
@@ -133,6 +134,7 @@
         clearForm();
         IsSecondStep = false;
         JS.InvokeVoidAsync("alert", "Succesfully added new question");
+        NavigationManager.NavigateTo("manage/questions");
     }
 
     private bool IsNotEssayOrFileUpload()

@@ -38,7 +38,7 @@ else
         </div>
         <div class="w-25 ml-3 pl-3 border-left border-secondary">
             <div class="mt-3">
-                <DetailQuestionCard question=@selectedQuestion></DetailQuestionCard>
+                <DetailQuestionCard question=@selectedQuestion OnDeleteCallback=@fetchQuestions></DetailQuestionCard>
             </div>
         </div>
     </div>
@@ -50,14 +50,18 @@ else
 
     Question selectedQuestion = null;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        Console.WriteLine("Init");
-        questions = await Task.Run(() => questionService.GetAll());
+        fetchQuestions();
     }
 
     protected void OnShowQuestionDetail(int id)
     {
         selectedQuestion = questions.Find(q => q.Id == id);
+    }
+
+    private void fetchQuestions()
+    {
+        questions = questionService.GetAll();
     }
 }

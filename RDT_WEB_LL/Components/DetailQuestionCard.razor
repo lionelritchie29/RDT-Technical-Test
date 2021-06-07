@@ -4,6 +4,7 @@
 
 @inject IJSRuntime JS
 @inject IQuestionServices questionService
+@inject NavigationManager NavigationManager
 
 <div class="card position-sticky" style="top: 0;">
     <div class="card-header bg-primary text-white">
@@ -24,7 +25,7 @@
 
         <QuestionCardAnswer question=@question></QuestionCardAnswer>
         <div class="card-body">
-            <a class="btn btn-primary text-white">Update</a>
+            <button class="btn btn-primary text-white" @onclick=@OnUpdate>Update</button>
             <button @onclick=@OnDelete class="btn btn-danger text-white">Delete</button>
         </div>
     }
@@ -34,6 +35,9 @@
     [Parameter]
     public Question question { get; set; }
 
+    [Parameter]
+    public EventCallback OnDeleteCallback { get; set; }
+
     private async void OnDelete()
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
@@ -41,6 +45,12 @@
         {
             questionService.Delete(question);
             await JS.InvokeVoidAsync("alert", "Delete success");
+            await OnDeleteCallback.InvokeAsync();
         }
+    }
+
+    private async void OnUpdate()
+    {
+        await JS.InvokeVoidAsync("alert", "Feature on progress");
     }
 }

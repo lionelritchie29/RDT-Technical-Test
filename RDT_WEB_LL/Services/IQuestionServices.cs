@@ -8,7 +8,7 @@ namespace RDT_WEB_LL.Services
 {
     interface IQuestionServices
     {
-        public Task<List<Question>> GetAll();
+        public List<Question> GetAll();
         public int Add(Question newQuestion);
         public int AddAnswers(List<PossibleAnswer> answers);
         public int Delete(Question question);
