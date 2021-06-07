@@ -88,23 +88,26 @@ namespace RDT_WEB_LL.Data
         {
             var hasher = new PasswordHasher<IdentityUser>();
 
-            modelBuilder.Entity<IdentityUser>().HasData(
-                new IdentityUser { 
-                    Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
-                    UserName = "Admin",
-                    Email = "admin@mail.com",
-                    PasswordHash = hasher.HashPassword(null, "Admin123!"),
-                    SecurityStamp = Guid.NewGuid().ToString()
-                },
+            var admin = new IdentityUser
+            {
+                Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
+                UserName = "Admin",
+                Email = "admin@mail.com",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
 
-                new IdentityUser
-                {
-                    Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
-                    UserName = "Brandon Julio",
-                    Email = "brandon@mail.com",
-                    PasswordHash = hasher.HashPassword(null, "Brandon123!"),
-                    SecurityStamp = Guid.NewGuid().ToString()
-                });
+            var participant = new IdentityUser
+            {
+                Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
+                UserName = "Brandon Julio",
+                Email = "brandon@mail.com",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            hasher.HashPassword(admin, "Admin123!");
+            hasher.HashPassword(participant, "Participant123!");
+
+            modelBuilder.Entity<IdentityUser>().HasData(admin, participant);
         }
 
         private void SeedRole(ModelBuilder modelBuilder)

@@ -1,5 +1,9 @@
 ﻿@using RDT_WEB_LL.Models
 @using RDT_WEB_LL.Components
+@using RDT_WEB_LL.Services
+
+@inject IJSRuntime JS
+@inject IQuestionServices questionService
 
 <div class="card position-sticky" style="top: 0;">
     <div class="card-header bg-primary text-white">
@@ -21,7 +25,7 @@
         <QuestionCardAnswer question=@question></QuestionCardAnswer>
         <div class="card-body">
             <a class="btn btn-primary text-white">Update</a>
-            <a class="btn btn-danger text-white">Delete</a>
+            <button @onclick=@OnDelete class="btn btn-danger text-white">Delete</button>
         </div>
     }
 </div>
@@ -29,4 +33,14 @@
 @code {
     [Parameter]
     public Question question { get; set; }
+
+    private async void OnDelete()
+    {
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            questionService.Delete(question);
+            await JS.InvokeVoidAsync("alert", "Delete success");
+        }
+    }
 }

@@ -40,5 +40,25 @@ namespace RDT_WEB_LL.Services
             }
             return questions;
         }
+
+        public int Delete(Question question)
+        {
+            if (question.HasCorrectAnswer)
+            {
+                DeleteAnswers(question.Id);
+            }
+            _context.Questions.Remove(question);
+            return _context.SaveChanges();
+        }
+        
+        private void DeleteAnswers(int questionId)
+        {
+            List<PossibleAnswer> answers = _context.PossibleAnswers.Where(ans => ans.QuestionId == questionId).ToList();
+            if (answers.Count() > 0)
+            {
+                _context.PossibleAnswers.RemoveRange(answers);
+                _context.SaveChanges();
+            }
+        }
     }
 }

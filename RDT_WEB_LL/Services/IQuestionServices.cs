@@ -11,5 +11,6 @@ namespace RDT_WEB_LL.Services
         public Task<List<Question>> GetAll();
         public int Add(Question newQuestion);
         public int AddAnswers(List<PossibleAnswer> answers);
+        public int Delete(Question question);
     }
 }
