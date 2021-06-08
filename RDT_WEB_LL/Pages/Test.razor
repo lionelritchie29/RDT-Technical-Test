@@ -2,9 +2,13 @@
 
 @attribute [Authorize(Roles = "Admin, Participant")]
 @inject IQuestionServices questionService
+@inject RDT_WEB_LL.Data.ApplicationDbContext context
+@inject IJSRuntime JS 
+@inject IAuthService authService 
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Components
+@using RDT_WEB_LL.Models 
 
 <h3>Nationality test</h3>
 
@@ -20,16 +24,28 @@
         }
 
         <div class="d-flex justify-content-end mb-5">
-            <button type="submit" class="btn btn-success">Submit my answer</button>
+            <button type="submit" class="btn btn-success" @onclick=@OnSubmit>Submit my answer</button>
         </div>
     </form>
 </section>
 
 @code {
     public List<RDT_WEB_LL.Models.Question> questions { get; set; }
+    public List<UserAnswer> answers { get; set; }
 
     protected override void OnInitialized()
     {
         questions = questionService.GetAll();
+        answers = new List<UserAnswer>();
+    }
+
+    private void AddNewAnswerToList(int questionid)
+    {
+        
+    }
+
+    private async void OnSubmit()
+    {
+        
     }
 }

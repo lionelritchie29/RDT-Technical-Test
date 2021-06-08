@@ -91,16 +91,20 @@ namespace RDT_WEB_LL.Data
             var admin = new IdentityUser
             {
                 Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
-                UserName = "Admin",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@MAIL.COM",
                 Email = "admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
             var participant = new IdentityUser
             {
                 Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
-                UserName = "Brandon Julio",
+                UserName = "brandon@mail.com",
+                NormalizedUserName = "BRANDON@MAIL.COM",
                 Email = "brandon@mail.com",
+                NormalizedEmail = "BRANDON@MAIL.COM",
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 

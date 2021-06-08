@@ -23,6 +23,9 @@
     [Parameter]
     public Question question { get; set; }
 
+    [Parameter]
+    public UserAnswer answer { get; set; }
+
     private bool IsMultipleChoiceOrBoolean()
     {
         return question.QuestionType.Id == (int)QuestionTypeEnum.MultipleChoice || question.QuestionType.Id == (int)QuestionTypeEnum.Boolean;
