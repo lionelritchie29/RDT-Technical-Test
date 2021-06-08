@@ -3,15 +3,15 @@
 <div class="px-4">
     @if (IsMultipleChoiceOrBoolean())
     {
-        <AnswerRadioInput questionTypeId=@question.QuestionType.Id answers=@question.PossibleAnswers></AnswerRadioInput>
+        <AnswerRadioInput questionTypeId=@question.QuestionType.Id @bind-userAnswer=userAnswer answers=@question.PossibleAnswers></AnswerRadioInput>
     }
     else if (IsSelectFromList())
     {
-        <AnswerSelectFromListInput answers=@question.PossibleAnswers></AnswerSelectFromListInput>
+        <AnswerSelectFromListInput answers=@question.PossibleAnswers @bind-userAnswer=userAnswer></AnswerSelectFromListInput>
     }
     else if (IsEssay())
     {
-        <AnswerEssayInput></AnswerEssayInput>
+        <AnswerEssayInput @bind-userAnswer=userAnswer></AnswerEssayInput>
     }
     else if (IsFileUpload())
     {
@@ -24,7 +24,10 @@
     public Question question { get; set; }
 
     [Parameter]
-    public UserAnswer answer { get; set; }
+    public UserAnswer userAnswer { get; set; }
+
+    [Parameter]
+    public EventCallback<UserAnswer> userAnswerChanged { get; set; }
 
     private bool IsMultipleChoiceOrBoolean()
     {

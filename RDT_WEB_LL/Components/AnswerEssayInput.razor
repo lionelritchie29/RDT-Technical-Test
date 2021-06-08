@@ -1,7 +1,19 @@
-﻿<div class="form-group">
-    <textarea class="form-control" rows="3"></textarea>
+﻿@using RDT_WEB_LL.Models
+
+<div class="form-group">
+    <textarea @oninput=OnTextAreaChange class="form-control" rows="3"></textarea>
 </div>
 
 @code {
+    [Parameter]
+    public UserAnswer userAnswer { get; set; }
 
+    [Parameter]
+    public EventCallback<UserAnswer> userAnswerChanged { get; set; }
+
+    private void OnTextAreaChange(ChangeEventArgs args)
+    {
+        userAnswer.Answer = args.Value.ToString();
+        userAnswerChanged.InvokeAsync(userAnswer);
+    }
 }

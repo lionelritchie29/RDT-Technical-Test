@@ -17,9 +17,10 @@
         @for (var i = 0; i < questions.Count(); i++)
         {
             var j = i;
+            int idx = AddNewAnswerToList(questions[i].Id);
             <QuestionCard question=@questions[j]>
                 <p>@(j+1).  @questions[j].QuestionText</p>
-                <QuestionCardAnswer question=@questions[j]></QuestionCardAnswer>
+                <QuestionCardAnswer question=@questions[j] @bind-userAnswer=@userAnswers[idx]></QuestionCardAnswer>
             </QuestionCard>
         }
 
@@ -31,21 +32,23 @@
 
 @code {
     public List<RDT_WEB_LL.Models.Question> questions { get; set; }
-    public List<UserAnswer> answers { get; set; }
+    public List<UserAnswer> userAnswers { get; set; }
 
     protected override void OnInitialized()
     {
         questions = questionService.GetAll();
-        answers = new List<UserAnswer>();
+        userAnswers = new List<UserAnswer>();
     }
 
-    private void AddNewAnswerToList(int questionid)
+    private int AddNewAnswerToList(int questionid)
     {
-        
+        userAnswers.Add(new UserAnswer { UserId = authService.GetCurrentUserId(), QuestionId = questionid, IsCorrect = false });
+        int insertedIdx = userAnswers.Count - 1;
+        return insertedIdx;
     }
 
     private async void OnSubmit()
     {
-        
+        JS.InvokeVoidAsync("alert", userAnswers[5].Answer);
     }
 }
