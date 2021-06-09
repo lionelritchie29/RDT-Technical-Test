@@ -23,7 +23,7 @@
             <p class="card-text">@question.QuestionText</p>
         </div>
 
-        <QuestionCardAnswer question=@question></QuestionCardAnswer>
+        <QuestionCardAnswer question=@question userAnswer=null></QuestionCardAnswer>
         <div class="card-body">
             <button class="btn btn-primary text-white" @onclick=@OnUpdate>Update</button>
             <button @onclick=@OnDelete class="btn btn-danger text-white">Delete</button>
