@@ -67,5 +67,11 @@ namespace RDT_WEB_LL.Services
                 _context.SaveChanges();
             }
         }
+
+        public List<UserAnswer> GetUserAnswers(string userId)
+        {
+            List<UserAnswer> answers = _context.UserAnswers.Include(ans => ans.Question).Where(ans => ans.UserId == userId).ToList();
+            return answers;
+        }
     }
 }

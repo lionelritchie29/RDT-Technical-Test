@@ -1,10 +1,60 @@
 ﻿@page "/manage/participants/{id}/result"
 
+@using RDT_WEB_LL.Services
+@using RDT_WEB_LL.Models
+
+@inject IQuestionServices questionService
+
 @attribute [Authorize(Roles = "Admin")]
 
 <h3>ViewTestResult for @Id</h3>
 
+@for (int i = 0; i < answers.Count; i++)
+{
+    var j = i;
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <p>@(j + 1).  @answers[j].Question.QuestionText</p>
+                <div><span class="badge @(SetBadgeColorClass(j))"> @SetAnswerStatus(j) </span></div>
+            </div>
+
+            <div class="ml-3">
+                Answer:
+                <div class="p-2 rounded-lg" style="background: #EAEAEA">
+                    @answers[j].Answer
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
     [Parameter]
     public string Id { get; set; }
+
+    public List<UserAnswer> answers { get; set; }
+
+    protected override void OnInitialized()
+    {
+        answers = questionService.GetUserAnswers(Id);
+    }
+
+    private string SetBadgeColorClass(int ansIdx)
+    {
+        if (IsEssayOrFileUpload(ansIdx)) return "badge-secondary";
+        return answers[ansIdx].IsCorrect ? "badge-success" : "badge-danger";
+    }
+
+    private string SetAnswerStatus(int ansIdx)
+    {
+        if (IsEssayOrFileUpload(ansIdx)) return "Need manual correction";
+        return answers[ansIdx].IsCorrect ? "Correct" : "Wrong Answer";
+    }
+
+    private bool IsEssayOrFileUpload(int ansIdx)
+    {
+        int questionTypeId = answers[ansIdx].Question.QuestionTypeId;
+        return questionTypeId == (int)QuestionTypeEnum.Essay || questionTypeId == (int)QuestionTypeEnum.FileUpload;
+    }
 }
