@@ -14,5 +14,6 @@ namespace RDT_WEB_LL.Services
         public int SaveUserAnswers(List<UserAnswer> answers);
         public List<UserAnswer> GetUserAnswers(string userId);
         public int Delete(Question question);
+        public int UpdateAnswerCorrectStatus(UserAnswer answer, bool isCorrect);
     }
 }

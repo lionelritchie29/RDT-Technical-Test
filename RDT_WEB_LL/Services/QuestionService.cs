@@ -73,5 +73,15 @@ namespace RDT_WEB_LL.Services
             List<UserAnswer> answers = _context.UserAnswers.Include(ans => ans.Question).Where(ans => ans.UserId == userId).ToList();
             return answers;
         }
+
+        public int UpdateAnswerCorrectStatus(UserAnswer answer, bool isCorrect)
+        {
+            UserAnswer ans = answer;
+            ans.IsCorrect = isCorrect;
+            _context.UserAnswers.Update(ans);
+
+            int status = _context.SaveChanges();
+            return status;
+        }
     }
 }

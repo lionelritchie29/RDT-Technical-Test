@@ -1,0 +1,75 @@
+﻿@using RDT_WEB_LL.Models 
+@using RDT_WEB_LL.Services
+
+@inject IQuestionServices questionService   
+@inject IJSRuntime JS
+
+<div class="card mb-3 primary-bg-dark">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <p>@(number).  @answer.Question.QuestionText</p>
+            <div><span class="badge @(SetBadgeColorClass())"> @SetAnswerStatus() </span></div>
+        </div>
+
+        <div class="ml-3">
+            Answer:
+            <div class="p-2 rounded-lg" style="background: #EAEAEA; color: #333333">
+                @answer.Answer
+            </div>
+
+            @if (IsEssayOrFileUpload() && answer.IsCorrect == null)
+            {
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-success mr-2" @onclick="@(e => UpdateCorrectStatus(true))">Mark as correct</button>
+                    <button class="btn btn-danger" @onclick="@(e => UpdateCorrectStatus(false))">Mark as incorrect</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public UserAnswer answer { get; set; }
+
+    [Parameter]
+    public int number { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> answerCorrectStatusUpdated { get; set; }
+
+    private string SetBadgeColorClass()
+    {
+        if (IsEssayOrFileUpload() && answer.IsCorrect == null) return "badge-secondary";
+        return answer.IsCorrect == true ? "badge-success" : "badge-danger";
+    }
+
+    private string SetAnswerStatus()
+    {
+        if (IsEssayOrFileUpload() && answer.IsCorrect == null) return "Need manual correction";
+        return answer.IsCorrect == true ? "Correct" : "Incorrect";
+    }
+
+    private bool IsEssayOrFileUpload()
+    {
+        int questionTypeId = answer.Question.QuestionTypeId;
+        return questionTypeId == (int)QuestionTypeEnum.Essay || questionTypeId == (int)QuestionTypeEnum.FileUpload;
+    }
+
+    private async void UpdateCorrectStatus(bool isCorrect)
+    {
+        int status = questionService.UpdateAnswerCorrectStatus(answer, isCorrect);
+
+        if (status > 0)
+        {
+            answer.IsCorrect = true;
+            await answerCorrectStatusUpdated.InvokeAsync(true);
+            await JS.InvokeVoidAsync("alert", "Answer marked as correct succesfully");
+        } else
+        {
+            answer.IsCorrect = false;
+            await answerCorrectStatusUpdated.InvokeAsync(false);
+            await JS.InvokeVoidAsync("alert", "Answer marked as incorrect succesfully");
+        }
+    }
+}

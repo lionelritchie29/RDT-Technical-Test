@@ -2,38 +2,28 @@
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Components
 
 @inject IQuestionServices questionService
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>ViewTestResult for @Id</h3>
+<h3>Test result for @Id</h3>
 
+
+<h4 class="mt-4">Result summary</h4>
 <ul class="list-group mb-5">
-    <li class="list-group-item">Correct answers: @correctAnswerCount</li>
-    <li class="list-group-item">Wrong answers: @wrongAnswerCount</li>
-    <li class="list-group-item">Not verified answers: @notVerifiedAnswerCount</li>
-    <li class="list-group-item">Final result: @correctAnswerCount / @questionCount</li>
+    <li class="list-group-item primary-bg-dark">Correct answers: <span class="text-success">@correctAnswerCount</span></li>
+    <li class="list-group-item primary-bg-dark">Wrong answers: <span class="text-danger">@wrongAnswerCount</span></li>
+    <li class="list-group-item primary-bg-dark">Not verified answers: <span class="text-info">@notVerifiedAnswerCount</span></li>
+    <li class="list-group-item primary-bg-dark">Final result: @(ShowScore()) <span class="badge badge-pill badge-success">@(ShowCorrectByTotalQuestionCount())</span></li>
 </ul>
 
-@for (int i = 0; i < answers.Count; i++)
+<h4 class="mt-4">Result detail</h4>
+@for (int i = 1; i <= answers.Count; i++)
 {
     var j = i;
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
-                <p>@(j + 1).  @answers[j].Question.QuestionText</p>
-                <div><span class="badge @(SetBadgeColorClass(j))"> @SetAnswerStatus(j) </span></div>
-            </div>
-
-            <div class="ml-3">
-                Answer:
-                <div class="p-2 rounded-lg" style="background: #EAEAEA">
-                    @answers[j].Answer
-                </div>
-            </div>
-        </div>
-    </div>
+    <AnswerResult answer=@answers[j-1] number=j answerCorrectStatusUpdated=@UpdateCount></AnswerResult>
 }
 
 @code {
@@ -51,9 +41,9 @@
     {
         answers = questionService.GetUserAnswers(Id);
         questionCount = answers.Count;
-        wrongAnswerCount = answers.FindAll(ans => ans.IsCorrect == false && !IsEssayOrFileUpload(answers.IndexOf(ans))).Count;
+        wrongAnswerCount = answers.FindAll(ans => ans.IsCorrect == false).Count;
         correctAnswerCount = answers.FindAll(ans => ans.IsCorrect == true).Count;
-        notVerifiedAnswerCount = answers.FindAll(ans => IsEssayOrFileUpload(answers.IndexOf(ans))).Count;
+        notVerifiedAnswerCount = answers.FindAll(ans => IsEssayOrFileUpload(answers.IndexOf(ans)) && ans.IsCorrect == null).Count;
     }
 
     private string SetBadgeColorClass(int ansIdx)
@@ -72,5 +62,27 @@
     {
         int questionTypeId = answers[ansIdx].Question.QuestionTypeId;
         return questionTypeId == (int)QuestionTypeEnum.Essay || questionTypeId == (int)QuestionTypeEnum.FileUpload;
+    }
+
+    private string ShowCorrectByTotalQuestionCount()
+    {
+        return $"{correctAnswerCount} / {questionCount}";
+    }
+
+    private string ShowScore()
+    {
+        return $"Score: {((double) correctAnswerCount / (double) questionCount) * 100}";
+    }
+
+    private void UpdateCount(bool isCorrect)
+    {
+        if (isCorrect)
+        {
+            correctAnswerCount += 1;
+        } else
+        {
+            wrongAnswerCount += 1;
+        }
+        notVerifiedAnswerCount -= 1;
     }
 }
