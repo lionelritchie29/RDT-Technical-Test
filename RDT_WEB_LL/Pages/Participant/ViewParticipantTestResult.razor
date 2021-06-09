@@ -9,6 +9,13 @@
 
 <h3>ViewTestResult for @Id</h3>
 
+<ul class="list-group mb-5">
+    <li class="list-group-item">Correct answers: @correctAnswerCount</li>
+    <li class="list-group-item">Wrong answers: @wrongAnswerCount</li>
+    <li class="list-group-item">Not verified answers: @notVerifiedAnswerCount</li>
+    <li class="list-group-item">Final result: @correctAnswerCount / @questionCount</li>
+</ul>
+
 @for (int i = 0; i < answers.Count; i++)
 {
     var j = i;
@@ -35,9 +42,18 @@
 
     public List<UserAnswer> answers { get; set; }
 
+    public int questionCount { get; set; }
+    public int correctAnswerCount { get; set; }
+    public int wrongAnswerCount { get; set; }
+    public int notVerifiedAnswerCount { get; set; }
+
     protected override void OnInitialized()
     {
         answers = questionService.GetUserAnswers(Id);
+        questionCount = answers.Count;
+        wrongAnswerCount = answers.FindAll(ans => ans.IsCorrect == false && !IsEssayOrFileUpload(answers.IndexOf(ans))).Count;
+        correctAnswerCount = answers.FindAll(ans => ans.IsCorrect == true).Count;
+        notVerifiedAnswerCount = answers.FindAll(ans => IsEssayOrFileUpload(answers.IndexOf(ans))).Count;
     }
 
     private string SetBadgeColorClass(int ansIdx)
