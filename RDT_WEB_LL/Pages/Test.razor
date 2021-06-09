@@ -43,7 +43,7 @@
 
     private int AddNewAnswerToList(int questionid)
     {
-        userAnswers.Add(new UserAnswer { UserId = authService.GetCurrentUserId(), QuestionId = questionid, IsCorrect = false });
+        userAnswers.Add(new UserAnswer { UserId = authService.GetCurrentUserId(), QuestionId = questionid});
         int insertedIdx = userAnswers.Count - 1;
         return insertedIdx;
     }
