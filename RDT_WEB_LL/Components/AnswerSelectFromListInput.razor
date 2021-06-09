@@ -1,10 +1,11 @@
 ﻿@using RDT_WEB_LL.Models
 
-<select id="inputState" class="form-control" @onchange=OnOptionSelected>
+<select id="inputState" class="form-control" @onchange=@OnOptionSelected>
     <option value="">---</option>
     @for (var i = 0; i < answers.Count(); i++)
     {
-        <option value=@answers[i].Answer>@answers[i].Answer</option>
+        var j = i;
+        <option value=@j>@answers[j].Answer</option>
     }
 </select>
 
@@ -20,7 +21,16 @@
 
     private void OnOptionSelected(ChangeEventArgs args)
     {
-        userAnswer.Answer = args.Value.ToString();
+        if (string.IsNullOrEmpty(args.Value.ToString()))
+        {
+            userAnswer.Answer = "";
+            return;
+        }
+
+        int answerIdx = int.Parse(args.Value.ToString());
+        userAnswer.Answer = answers[answerIdx].Answer;
+        userAnswer.IsCorrect = answers[answerIdx].IsCorrect;
+
         userAnswerChanged.InvokeAsync(userAnswer);
     }
 }

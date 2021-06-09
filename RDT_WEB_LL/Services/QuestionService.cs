@@ -31,6 +31,13 @@ namespace RDT_WEB_LL.Services
             return status;
         }
 
+        public int SaveUserAnswers(List<UserAnswer> answers)
+        {
+            _context.UserAnswers.AddRange(answers);
+            int status = _context.SaveChanges();
+            return status;
+        }
+
         public List<Question> GetAll()
         {
             List<Question> questions = _context.Questions.Include(q => q.QuestionType).ToList();

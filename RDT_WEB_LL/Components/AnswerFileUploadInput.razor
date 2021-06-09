@@ -1,7 +1,43 @@
-﻿<div class="form-group">
-    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+﻿@using RDT_WEB_LL.Models
+@using Microsoft.AspNetCore.Hosting
+@using System.IO 
+@using RDT_WEB_LL.Services
+
+@inject IAuthService authService
+@inject IWebHostEnvironment env
+@inject IJSRuntime JS
+@inject IFileService fileService; 
+
+<div class="form-group">
+    <InputFile OnChange=OnFileUploaded class="form-control-file" />
+
+    @if (file != null)
+    {
+    <ul class="list-group mt-5">
+        <li class="list-group-item">Name: @file.Name</li>
+        <li class="list-group-item">Size: @file.Size bytes </li>
+        <li class="list-group-item">Content type: @file.ContentType</li>
+    </ul>
+    }
 </div>
 
 @code {
+    [Parameter]
+    public UserAnswer userAnswer { get; set; }
 
+    [Parameter]
+    public EventCallback<UserAnswer> userAnswerChanged { get; set; }
+
+
+    public IBrowserFile file { get; set; }
+
+    private async void OnFileUploaded(InputFileChangeEventArgs e)
+    {
+        file = e.File;
+        userAnswer.Answer = file.Name;
+
+        fileService.Save(file);
+        await userAnswerChanged.InvokeAsync(userAnswer);
+        await JS.InvokeVoidAsync("console.log", file);
+    }
 }

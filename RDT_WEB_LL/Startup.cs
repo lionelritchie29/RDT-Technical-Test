@@ -37,6 +37,7 @@ namespace RDT_WEB_LL
             services.AddScoped<IQuestionServices, QuestionService>();
             services.AddScoped<IQuestionTypeService, QuestionTypeService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IFileService, FileService>();
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

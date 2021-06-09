@@ -1,10 +1,11 @@
 ﻿@page "/test"
 
 @attribute [Authorize(Roles = "Admin, Participant")]
+
 @inject IQuestionServices questionService
 @inject RDT_WEB_LL.Data.ApplicationDbContext context
-@inject IJSRuntime JS 
 @inject IAuthService authService 
+@inject IJSRuntime JS 
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Components
@@ -25,7 +26,7 @@
         }
 
         <div class="d-flex justify-content-end mb-5">
-            <button type="submit" class="btn btn-success" @onclick=@OnSubmit>Submit my answer</button>
+            <button type="submit" class="btn btn-success" @onclick=@OnSubmit @onclick:preventDefault="true">Submit my answer</button>
         </div>
     </form>
 </section>
@@ -49,6 +50,8 @@
 
     private async void OnSubmit()
     {
-        JS.InvokeVoidAsync("alert", userAnswers[5].Answer);
+        questionService.SaveUserAnswers(userAnswers);
+        await JS.InvokeVoidAsync("alert", "Succesfully saved answer");
+
     }
 }

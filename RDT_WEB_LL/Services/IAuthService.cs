@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RDT_WEB_LL.Services
 {
-    interface IAuthService
+    public interface IAuthService
     {
         public string GetCurrentUserId(); 
     }

@@ -5,7 +5,7 @@
     var j = i;
     char choiceChar = (char)(j + 65);
     <div class="form-check">
-        <input class="form-check-input" type="radio" name=@answers[0].QuestionId @onchange=@OnOptionSelected value=@answers[j].Answer>
+        <input class="form-check-input" type="radio" name=@answers[0].QuestionId @onchange="@(e => OnOptionSelected(e, j))" value=@answers[j].Answer>
         <label class="form-check-label" for="exampleRadios1">
             @ShowChoiceAlphabet(j) @answers[j].Answer
         </label>
@@ -32,12 +32,18 @@
 
     protected override void OnInitialized()
     {
-        userAnswer.Answer = answers[0].Answer;
+        if (answers != null)
+        {
+            userAnswer.Answer = answers[0].Answer;
+        }
+
     }
 
-    private void OnOptionSelected(ChangeEventArgs args)
+    private void OnOptionSelected(ChangeEventArgs args, int answerIdx)
     {
         userAnswer.Answer = args.Value.ToString();
+        userAnswer.IsCorrect = answers[answerIdx].IsCorrect;
+
         userAnswerChanged.InvokeAsync(userAnswer);
     }
 }
