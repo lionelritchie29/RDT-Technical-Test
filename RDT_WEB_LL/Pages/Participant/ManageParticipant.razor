@@ -1,9 +1,38 @@
-﻿@page "/manage/participants" 
+﻿@page "/manage/participants"
+
+@using Microsoft.AspNetCore.Identity
+@using RDT_WEB_LL.Services
+
+@inject IParticipantService participantService
+@inject NavigationManager navManager 
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>ManageParticipant</h3>
+<h3>Manage Participants</h3>
+
+@foreach (var participant in participants)
+{
+<div class="card">
+    <div class="card-body d-flex justify-content-between">
+        <div>@participant.UserName</div>
+        <div>
+            <button class="btn btn-primary" @onclick="@(e => NavigateToResultPage(participant.Id))">View test results</button>
+        </div>
+    </div>
+</div>
+}
 
 @code {
+    public List<IdentityUser> participants { get; set; }
 
+    protected override void OnInitialized()
+    {
+        participants = participantService.GetAll();
+    }
+
+    private void NavigateToResultPage(string userId)
+    {
+        string url = $"manage/participants/{userId}/result";
+        navManager.NavigateTo(url);
+    }
 }

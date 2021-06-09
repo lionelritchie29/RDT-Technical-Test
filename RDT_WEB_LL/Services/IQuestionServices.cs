@@ -12,6 +12,7 @@ namespace RDT_WEB_LL.Services
         public int Add(Question newQuestion);
         public int AddAnswers(List<PossibleAnswer> answers);
         public int SaveUserAnswers(List<UserAnswer> answers);
+        public List<UserAnswer> GetUserAnswers(string userId);
         public int Delete(Question question);
     }
 }
