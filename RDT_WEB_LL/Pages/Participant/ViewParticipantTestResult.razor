@@ -59,13 +59,13 @@
     private string SetBadgeColorClass(int ansIdx)
     {
         if (IsEssayOrFileUpload(ansIdx)) return "badge-secondary";
-        return answers[ansIdx].IsCorrect ? "badge-success" : "badge-danger";
+        return answers[ansIdx].IsCorrect == true ? "badge-success" : "badge-danger";
     }
 
     private string SetAnswerStatus(int ansIdx)
     {
         if (IsEssayOrFileUpload(ansIdx)) return "Need manual correction";
-        return answers[ansIdx].IsCorrect ? "Correct" : "Wrong Answer";
+        return answers[ansIdx].IsCorrect == true ? "Correct" : "Wrong Answer";
     }
 
     private bool IsEssayOrFileUpload(int ansIdx)
