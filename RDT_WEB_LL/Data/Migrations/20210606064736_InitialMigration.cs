@@ -68,7 +68,7 @@ namespace RDT_WEB_LL.Data.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
                     Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsCorrect = table.Column<bool>(type: "bit", nullable: false)
+                    IsCorrect = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

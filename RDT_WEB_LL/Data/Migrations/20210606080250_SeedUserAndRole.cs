@@ -20,8 +20,8 @@ namespace RDT_WEB_LL.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "af3246f8-2bc5-404b-8212-3a5005c98790", 0, "ff401096-8d27-44e4-9fb7-2ce9304651fc", "admin@mail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEL3XGVeMIlgdh1r/Z8gq/5J0OZbTFMbxMySs3fI9Qw/GxgqrrgSiV0vQ01g44vDHRQ==", null, false, "758b567f-1ce9-4d57-87eb-d60d72fce6ce", false, "Admin" },
-                    { "dc954b45-44ef-4404-b8d6-d502ec9de9ec", 0, "c055af86-0a1b-411c-8a0f-cd58839b2e13", "brandon@mail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEO80JUwNVeudo2IHsmoM4JfngY6YTxhjjyWmNWqEoyajPMxGIWxG1DAeyZqsP5qw4g==", null, false, "d20db892-46d3-4a88-9212-befb7bdd44ae", false, "Brandon Julio" }
+                    { "af3246f8-2bc5-404b-8212-3a5005c98790", 0, "ff401096-8d27-44e4-9fb7-2ce9304651fc", "admin@mail.com", false, false, null, "ADMIN@MAIL.COM", "ADMIN@MAIL.COM", "AQAAAAEAACcQAAAAEL3XGVeMIlgdh1r/Z8gq/5J0OZbTFMbxMySs3fI9Qw/GxgqrrgSiV0vQ01g44vDHRQ==", null, false, "758b567f-1ce9-4d57-87eb-d60d72fce6ce", false, "admin@mail.com" },
+                    { "dc954b45-44ef-4404-b8d6-d502ec9de9ec", 0, "c055af86-0a1b-411c-8a0f-cd58839b2e13", "brandon@mail.com", false, false, null, "BRANDON@MAIL.COM", "BRANDON@MAIL.COM", "AQAAAAEAACcQAAAAEO80JUwNVeudo2IHsmoM4JfngY6YTxhjjyWmNWqEoyajPMxGIWxG1DAeyZqsP5qw4g==", null, false, "d20db892-46d3-4a88-9212-befb7bdd44ae", false, "brandon@mail.com" }
                 });
 
             migrationBuilder.InsertData(
