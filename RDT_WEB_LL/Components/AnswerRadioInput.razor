@@ -44,6 +44,7 @@
 
     private void OnOptionSelected(ChangeEventArgs args, int answerIdx)
     {
+        if (userAnswer == null) return;
         userAnswer.Answer = args.Value.ToString();
         userAnswer.IsCorrect = answers[answerIdx].IsCorrect;
 

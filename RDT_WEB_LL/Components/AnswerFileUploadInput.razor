@@ -33,6 +33,7 @@
 
     private async void OnFileUploaded(InputFileChangeEventArgs e)
     {
+        if (userAnswer == null) return;
         file = e.File;
         userAnswer.Answer = file.Name;
         userAnswer.IsCorrect = null;

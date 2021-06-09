@@ -13,6 +13,7 @@
 
     private void OnTextAreaChange(ChangeEventArgs args)
     {
+        if (userAnswer == null) return;
         userAnswer.Answer = args.Value.ToString();
         userAnswer.IsCorrect = null;
         userAnswerChanged.InvokeAsync(userAnswer);

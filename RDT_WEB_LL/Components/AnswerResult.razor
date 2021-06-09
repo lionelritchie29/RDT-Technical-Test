@@ -60,7 +60,13 @@
     {
         int status = questionService.UpdateAnswerCorrectStatus(answer, isCorrect);
 
-        if (status > 0)
+        if (status < 0)
+        {
+            await JS.InvokeVoidAsync("alert", "Error when updating answer status");
+            return;
+        }
+
+        if (isCorrect)
         {
             answer.IsCorrect = true;
             await answerCorrectStatusUpdated.InvokeAsync(true);

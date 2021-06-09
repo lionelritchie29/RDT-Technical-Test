@@ -21,6 +21,7 @@
 
     private void OnOptionSelected(ChangeEventArgs args)
     {
+        if (userAnswer == null) return;
         if (string.IsNullOrEmpty(args.Value.ToString()))
         {
             userAnswer.Answer = "";
