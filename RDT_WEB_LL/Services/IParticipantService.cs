@@ -10,5 +10,6 @@ namespace RDT_WEB_LL.Services
     {
         public List<IdentityUser> GetAll();
         public List<IdentityUser> GetNotScheduled();
+        public IdentityUser GetParticipantById(string userId);
     }
 }

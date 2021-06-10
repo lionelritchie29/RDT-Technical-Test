@@ -1,10 +1,37 @@
 ﻿@page "/manage/participants/{id}/status"
 
+@using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Services
+@using RDT_WEB_LL.Components
+@using Microsoft.AspNetCore.Identity 
+
+@inject IQuestionServices questionService
+@inject IParticipantService participantService
+
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>ViewParticipantTestStatus for @Id</h3>
+<h3>Answer Status of @user.NormalizedUserName</h3>
+
+@for (int i = 1; i <= answers.Count; i++)
+{
+    var j = i;
+    <AnswerResult answer=@answers[j-1] number=j answerCorrectStatusUpdated=@UpdateCount></AnswerResult>
+}
 
 @code {
     [Parameter]
     public string Id { get; set; }
+    public IdentityUser user { get; set; }
+    public List<UserAnswer> answers { get; set; }
+
+    protected override void OnInitialized()
+    {
+        user = participantService.GetParticipantById(Id);
+        answers = questionService.GetUserAnswers(Id);
+    }
+
+    private void UpdateCount()
+    {
+
+    }
 }

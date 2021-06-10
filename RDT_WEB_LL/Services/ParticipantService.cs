@@ -41,5 +41,10 @@ namespace RDT_WEB_LL.Services
                 select u).ToList();
             return participants;
         }
+
+        public IdentityUser GetParticipantById(string userId)
+        {
+            return _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+        }
     }
 }

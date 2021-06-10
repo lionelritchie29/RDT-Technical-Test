@@ -25,7 +25,7 @@
             }
             else if (IsScheduleTaken(schedule) == true)
             {
-                <button class="btn btn-primary mr-3" @onclick="@(e => NavigateToResultPage(participant.Id))">View test status</button>
+                <button class="btn btn-primary mr-3" @onclick="@(e => NavigateToStatusPage(participant.Id))">View test status</button>
                 <button class="btn btn-primary" @onclick="@(e => NavigateToResultPage(participant.Id))">View test results</button>
             }
             else
@@ -55,6 +55,12 @@
     private void NavigateToResultPage(string userId)
     {
         string url = $"manage/participants/{userId}/result";
+        navManager.NavigateTo(url);
+    }
+
+    private void NavigateToStatusPage(string userId)
+    {
+        string url = $"manage/participants/{userId}/status";
         navManager.NavigateTo(url);
     }
 
