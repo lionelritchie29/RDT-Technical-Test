@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RDT_WEB_LL.Data;
 
 namespace RDT_WEB_LL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210610034127_UpdateSchedule")]
+    partial class UpdateSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,13 +51,13 @@ namespace RDT_WEB_LL.Data.Migrations
                         new
                         {
                             Id = "admin",
-                            ConcurrencyStamp = "812673be-38fe-48c5-9936-7696ba8086c1",
+                            ConcurrencyStamp = "7f609717-83be-4234-8905-78ae31922922",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = "participant",
-                            ConcurrencyStamp = "271ab109-588f-4b34-b757-71e72198b3a8",
+                            ConcurrencyStamp = "6c341ad4-cb21-4ede-a72c-d111bd2dbf91",
                             Name = "Participant"
                         });
                 });
@@ -153,15 +155,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "776a4362-f185-45a3-9df2-8ec1b6b022cb",
+                            ConcurrencyStamp = "e2911ae5-3b1d-47c4-ba47-febd6d35686b",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMa30i7b8M9KZANxCqxExlRM5qJFvPleb5bEg3Wp8sL+Ravm+yqOM56xXczJmh1Pyg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP3KVG7KoGRLC5n4ouD2HBQc4VsarZcVM9XZoBmSWoOiVoVRDFKbGOWXF2Y5fu8NQQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7483b490-7d59-49a1-9ddb-d454de96aa5a",
+                            SecurityStamp = "48b4eb9f-c520-413f-9ea1-8c8131eca7a4",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -169,15 +171,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "27fd22d2-fe2a-47d2-bd90-d64cb8d1729a",
+                            ConcurrencyStamp = "12ae22b7-bdbe-49c3-9b21-a187b08bf9aa",
                             Email = "brandon@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "BRANDON@MAIL.COM",
                             NormalizedUserName = "BRANDON@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAIxxMPWMn3dozVH6m+E3P1kZsCuuV1M33dy+aIs3azq5ZTlz+tD1edNdoZocJFlZA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJAXfI9WjPWMF1I7PpnsZ2Gr7EdW2u+bbgaRBF5akyL2fpoCPr7/+fnNhtoIUekTFA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d7a0564d-6767-4783-a7ee-1b7633d3b053",
+                            SecurityStamp = "b2ac0fbc-790a-44e2-88a3-739803e80318",
                             TwoFactorEnabled = false,
                             UserName = "brandon@mail.com"
                         },
@@ -185,15 +187,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "7c17889b-010f-41b3-b8d6-3521a10b1915",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "528ad953-5962-41bb-a83d-46744c8462df",
+                            ConcurrencyStamp = "3c342463-0925-47ac-bb13-f0bf3b4e1d35",
                             Email = "stanley@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "STANLEY@MAIL.COM",
                             NormalizedUserName = "STANLEY@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENlE56QRkAVPs30e2Z0YCNWtqqsNCDAPkVyLGvo2X4hceSaAVD326/wL6KNXzhWLXg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPVpcnGdWAqcNnVwhBfArEVEGApf1qVfLs/+z0FL6lfhxr6W9Hg3Yg2/MlpuNOT/jw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b3284933-4331-4e06-a100-927701fc881c",
+                            SecurityStamp = "1b3509e8-d5e4-4ac3-9b87-6c6c0d3b4704",
                             TwoFactorEnabled = false,
                             UserName = "stanley@mail.com"
                         },
@@ -201,15 +203,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "ff2fd92b-7657-4855-a9b9-70977cd91b3e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f097446-f7b1-43bc-97ad-c3e09deae1a1",
+                            ConcurrencyStamp = "2178223a-7f94-4704-aa5b-7af0875203b0",
                             Email = "clarissa@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CLARISSA@MAIL.COM",
                             NormalizedUserName = "CLARISSA@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPxXJHmU206mrDBHbqnFH8y0w//Bgr1BrIt6fj9dFS2ynCImqtD1Bwmf4nVdtrLuGg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECLIORo1NXzx64rX6EUQtDrWAEoYNFbLFwtAEeuVXbKoQMPg2l3GYOBc/cUj0l2A/w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4f97bed1-eae9-4801-b434-1d8d419bc64b",
+                            SecurityStamp = "df3ab92d-5f7e-473e-a4c9-2b22781bbbac",
                             TwoFactorEnabled = false,
                             UserName = "clarissa@mail.com"
                         },
@@ -217,15 +219,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "c12807d5-b1cd-45f0-85ee-6a293e07989d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ba1f37f-d9b9-442c-8958-a3d457664d0a",
+                            ConcurrencyStamp = "f8223da1-5e6f-4aac-b84f-a7a31bedec33",
                             Email = "gaby@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GABY@MAIL.COM",
                             NormalizedUserName = "GABY@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK9dMuPR4B48T3Q9OD3kYS6LhwWK22tIVtCKE1owHkJXA99f1DEeE13027dwsKeMyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJPAdKNs0v5wwGsys/xv9/5/V9+VEHoPp9FqvyBF/IzT/q9AbucAqUhUKdmlTg02FA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a778a41b-f5ea-458e-ac1d-b61c64552b11",
+                            SecurityStamp = "dbee4c6b-f27e-4957-a2a5-c1e17a85de0f",
                             TwoFactorEnabled = false,
                             UserName = "gaby@mail.com"
                         },
@@ -233,15 +235,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "035c6e49-5ac7-4eb7-8e96-2fee62b29289",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f7cc408b-560a-4b51-8486-ecea42f1064d",
+                            ConcurrencyStamp = "76d85667-ff79-4dea-8684-428eb052ebe4",
                             Email = "cleo@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CLEO@MAIL.COM",
                             NormalizedUserName = "CLEO@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIMX8E4GL3k2Cg84ivn3Kq5LNuZJw5mn85X3P9evhfvJfPUT4g3dk0wigil5SqVURA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENE5XnhnW5tAzh9eiKrsvugtEqVS1fo7DuXZY0Ct0VFkecwe/hpGD0+eY629WvD/IA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f6e22764-3242-403d-adf2-973a8b9250d9",
+                            SecurityStamp = "555cf3db-e708-48b7-b4a2-7721317dbaa3",
                             TwoFactorEnabled = false,
                             UserName = "cleo@mail.com"
                         },
@@ -249,15 +251,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "64792414-6240-4f4a-a06b-e519464f4fc0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "47e0ffba-f3c5-4ca1-9515-84251b977c87",
+                            ConcurrencyStamp = "b89abc83-45db-47e7-a404-b340b4972950",
                             Email = "vincent@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "VINCENT@MAIL.COM",
                             NormalizedUserName = "VINCENT@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELEEx0TC+KhuJn+Owh3z+UBrWQMxIfFG0FfwvOAEHPfKpwbCbdqsqMgwWA5VcJToBA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELIA1rDbKpFS96/DmsDH5DmrSPFGz4fSKnkEhhnVZWNFBiIJL9ruHTVkoIG96iPHlw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "350c7ed9-4996-43bd-86ec-dadc7b5ae1cd",
+                            SecurityStamp = "774622ea-a800-4658-83c2-38deb6bdce06",
                             TwoFactorEnabled = false,
                             UserName = "vincent@mail.com"
                         },
@@ -265,15 +267,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bc56a5ce-9a68-490e-94b0-3e29415c3ce1",
+                            ConcurrencyStamp = "38ce90b8-46b3-4a98-af38-ea8df9a01257",
                             Email = "jepe@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JEPE@MAIL.COM",
                             NormalizedUserName = "JEPE@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELQqGJViZ+77CB5VjEB98JmMF/Dp8jWfxNaotQqRl7YlZsRb1/QVd4szr3034t2h2g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJFUEvRBpjAzDb/EbIFFR+0Wqx35BTnAGmtGsmDNT0DuFAt+RhG0ztadAJfvkiy3ag==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9eca7138-a452-4b91-a8dd-d982d7ddd13d",
+                            SecurityStamp = "f4904188-983f-41d6-9ec7-1c0275d52a0c",
                             TwoFactorEnabled = false,
                             UserName = "jepe@mail.com"
                         },
@@ -281,15 +283,15 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "b63985bb-0aad-4ba2-abec-2570974c04ed",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "af700a2c-899e-4023-a98b-54cf1471fe51",
+                            ConcurrencyStamp = "368c89b3-3765-4118-9566-0ab838984e7c",
                             Email = "onel@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ONEL@MAIL.COM",
                             NormalizedUserName = "ONEL@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENcujXENGwSDOVMcwpz2EH96GCIUoNrZW9Bn8bTOQNKk6GRPJqJt5PFHOimN9I/lvA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPCRY6ZE+2z5UjEGpNCk+TK/SmnM1gd/dTt6FI3PuCmDI3q5TNiiezoSi1UPyIiizg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8fb9e12a-787f-4901-8a83-9de6a6f70ece",
+                            SecurityStamp = "c030b5af-8a73-43c3-897c-948438553324",
                             TwoFactorEnabled = false,
                             UserName = "onel@mail.com"
                         });
@@ -710,72 +712,6 @@ namespace RDT_WEB_LL.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Schedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Status = "",
-                            UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
-                            endDate = new DateTime(2021, 6, 10, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 10, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Status = "",
-                            UserId = "7c17889b-010f-41b3-b8d6-3521a10b1915",
-                            endDate = new DateTime(2021, 6, 14, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 14, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Status = "",
-                            UserId = "ff2fd92b-7657-4855-a9b9-70977cd91b3e",
-                            endDate = new DateTime(2021, 6, 11, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 11, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Status = "",
-                            UserId = "c12807d5-b1cd-45f0-85ee-6a293e07989d",
-                            endDate = new DateTime(2021, 6, 10, 19, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 10, 15, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Status = "",
-                            UserId = "035c6e49-5ac7-4eb7-8e96-2fee62b29289",
-                            endDate = new DateTime(2021, 6, 9, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 9, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Status = "",
-                            UserId = "64792414-6240-4f4a-a06b-e519464f4fc0",
-                            endDate = new DateTime(2021, 6, 8, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 8, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Status = "",
-                            UserId = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005",
-                            endDate = new DateTime(2021, 6, 15, 18, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 15, 12, 0, 0, 0, DateTimeKind.Local)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Status = "",
-                            UserId = "b63985bb-0aad-4ba2-abec-2570974c04ed",
-                            endDate = new DateTime(2021, 6, 10, 21, 0, 0, 0, DateTimeKind.Local),
-                            startDate = new DateTime(2021, 6, 10, 18, 0, 0, 0, DateTimeKind.Local)
-                        });
                 });
 
             modelBuilder.Entity("RDT_WEB_LL.Models.UserAnswer", b =>

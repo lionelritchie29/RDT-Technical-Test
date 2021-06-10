@@ -33,6 +33,7 @@ namespace RDT_WEB_LL.Data
             SeedPossibleAnswers(modelBuilder);
             SeedUser(modelBuilder);
             SeedRole(modelBuilder);
+            SeedSchedule(modelBuilder);
         }
 
         private void SeedQuestionType(ModelBuilder modelBuilder)
@@ -211,6 +212,20 @@ namespace RDT_WEB_LL.Data
                 new IdentityUserRole<string> { RoleId = "participant", UserId = "64792414-6240-4f4a-a06b-e519464f4fc0" },
                 new IdentityUserRole<string> { RoleId = "participant", UserId = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005" },
                 new IdentityUserRole<string> { RoleId = "participant", UserId = "b63985bb-0aad-4ba2-abec-2570974c04ed" }
+                );
+        }
+
+        private void SeedSchedule(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Schedule>().HasData(
+                new Schedule { Id = 1, UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec", startDate = new DateTime(2021, 06, 10, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 10, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 2, UserId = "7c17889b-010f-41b3-b8d6-3521a10b1915", startDate = new DateTime(2021, 06, 14, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 14, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 3, UserId = "ff2fd92b-7657-4855-a9b9-70977cd91b3e", startDate = new DateTime(2021, 06, 11, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 11, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 4, UserId = "c12807d5-b1cd-45f0-85ee-6a293e07989d", startDate = new DateTime(2021, 06, 10, 15, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 10, 19, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 5, UserId = "035c6e49-5ac7-4eb7-8e96-2fee62b29289", startDate = new DateTime(2021, 06, 09, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 09, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 6, UserId = "64792414-6240-4f4a-a06b-e519464f4fc0", startDate = new DateTime(2021, 06, 08, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 08, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 7, UserId = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005", startDate = new DateTime(2021, 06, 15, 12, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 15, 18, 0, 0, DateTimeKind.Local), Status = "" },
+                new Schedule { Id = 8, UserId = "b63985bb-0aad-4ba2-abec-2570974c04ed", startDate = new DateTime(2021, 06, 10, 18, 0, 0, DateTimeKind.Local), endDate = new DateTime(2021, 06, 10, 21, 0, 0, DateTimeKind.Local), Status = "" }
                 );
         }
     }
