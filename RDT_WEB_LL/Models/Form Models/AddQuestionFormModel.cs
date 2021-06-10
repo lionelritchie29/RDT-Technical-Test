@@ -15,7 +15,7 @@ namespace RDT_WEB_LL.Models.Form_Models
         public string QuestionTypeId { get; set; }
         public bool HasCorrectAnswer { get; set; }
 
-        //[ValidateComplexType]
+        [ValidateComplexType]
         public List<PossibleAnswerFormModel> PossibleAnswers { get; set; }
 
         public AddQuestionFormModel()

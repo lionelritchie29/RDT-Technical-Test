@@ -31,7 +31,7 @@
                         <option value="" selected>---</option>
                         @foreach (var type in questionTypes)
                             {
-                            <option value=@type.Id>@type.Type</option>
+                                <option value=@type.Id>@type.Type</option>
                             }
                     </InputSelect>
                     <ValidationMessage For="() => model.QuestionTypeId" />
@@ -44,7 +44,7 @@
                         @for (var i = 0; i < possibleAnswerInputcount; i++)
                         {
                             var j = i;
-                            <div class="d-flex">
+                            <div class="d-flex" @key=@j>
                                 <InputText @bind-Value=@model.PossibleAnswers[j].Value class="form-control mb-2" placeholder="Enter possible answer" />
                                 <div><button class="btn btn-outline-danger ml-3" @onclick="@(e => DeleteList(j))" @onclick:preventDefault="true">Delete</button></div>
                             </div>
@@ -81,7 +81,10 @@
         if (e.FieldIdentifier.FieldName == "QuestionTypeId")
         {
             clearPossibleAnswerInput();
-            AddAnswerList();
+            if (IsNotEssayOrFileUpload() && !IsBoolean())
+            {
+                AddAnswerList();
+            }
             IsSecondStep = false;
         }
     }
@@ -121,7 +124,6 @@
     {
         if (IsBoolean())
         {
-            model.PossibleAnswers.RemoveAt(0); //remove the first input field
             model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "False" });
             model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "True" });
         }
