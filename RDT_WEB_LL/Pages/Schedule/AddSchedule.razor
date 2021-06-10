@@ -1,0 +1,35 @@
+﻿@page "/manage/schedules/add"
+
+<h3>Add Schedule</h3>
+
+<div class="card primary-bg-dark">
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <label>Participant</label>
+                <select class="form-control">
+                    <option>Test</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Start date and time</label>
+                <SfDateTimePicker TValue="DateTime?" Min="@DateTime.Now" Value="@StartDate" Placeholder="Choose a date time"></SfDateTimePicker>
+            </div>
+
+            <div class="form-group">
+                <label>End date and time</label>
+                <SfDateTimePicker TValue="DateTime?" Min="@DateTime.Now.AddHours(3)" Value="@EndDate" Placeholder="Choose a date time"></SfDateTimePicker>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <input type="submit" value="Add schedule" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    public DateTime EndDate { get; set; } = DateTime.Now.AddHours(3);
+}

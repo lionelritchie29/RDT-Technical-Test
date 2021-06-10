@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Syncfusion.Blazor;
 
 namespace RDT_WEB_LL
 {
@@ -40,6 +41,7 @@ namespace RDT_WEB_LL
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IParticipantService, ParticipantService>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddSyncfusionBlazor();
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -59,6 +61,7 @@ namespace RDT_WEB_LL
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDU3NzMyQDMxMzkyZTMxMmUzMGZMUWpVSk9XdHJ2dUx4UlM2b2RDYnFMY1NFeUl0NnlKVFgrL1QyWG1abXc9");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

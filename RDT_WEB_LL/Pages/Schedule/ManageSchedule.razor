@@ -9,7 +9,15 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Manage Schedules</h3>
+<div class="d-flex mb-4">
+    <h3>Manage Schedules</h3>
+
+    <div class="ml-3">
+        <NavLink class="btn btn-primary" href="manage/schedules/add" Match="NavLinkMatch.All">
+            Add new schedule
+        </NavLink>
+    </div>
+</div>
 
 <div class="row">
     @foreach (var schedule in schedules)
