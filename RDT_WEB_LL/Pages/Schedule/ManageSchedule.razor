@@ -22,7 +22,7 @@
 <div class="row">
     @foreach (var schedule in schedules)
     {
-        <div class="col-6" @key=@schedule>
+        <div class="col-12" @key=@schedule>
             <ScheduleCard schedule=@schedule OnDeleteCallback=RemoveDeletedScheduleFromList></ScheduleCard>
         </div>
     }

@@ -11,7 +11,7 @@ namespace RDT_WEB_LL.Services
     public class ParticipantService : IParticipantService
     {
         private readonly ApplicationDbContext _context;
-        
+
         public ParticipantService(ApplicationDbContext context) {
             _context = context;
         }
@@ -45,6 +45,17 @@ namespace RDT_WEB_LL.Services
         public IdentityUser GetParticipantById(string userId)
         {
             return _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+        }
+
+        public int Delete(IdentityUser participant)
+        {
+            _context.Users.Remove(participant);
+
+            var relatedSchedule =_context.Schedules.Where(s => s.UserId == participant.Id).FirstOrDefault(); ;
+            _context.Schedules.Remove(relatedSchedule);
+
+            int status = _context.SaveChanges();
+            return status;
         }
     }
 }
