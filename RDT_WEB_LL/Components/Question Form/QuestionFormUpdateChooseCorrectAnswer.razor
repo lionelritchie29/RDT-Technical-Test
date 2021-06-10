@@ -1,7 +1,7 @@
 ﻿@using RDT_WEB_LL.Models.Form_Models
-@using RDT_WEB_LL.Models 
+@using RDT_WEB_LL.Models
 
-@inject IJSRuntime JS 
+@inject IJSRuntime JS
 
 <div class="card mt-3 primary-bg-dark">
     <div class="card-body">
@@ -25,13 +25,19 @@
                 </div>
             </form>
         }
-        <button type="submit" class="btn btn-primary" @onclick=@OnAdd>Add question</button>
+        <button type="submit" class="btn btn-primary" @onclick=@OnUpdate>Update question</button>
     </div>
 </div>
 
 @code {
     [Parameter]
     public AddQuestionFormModel Model { get; set; }
+
+    [Parameter]
+    public EventCallback<AddQuestionFormModel> ModelChanged { get; set; }
+
+    [Parameter]
+    public int CorrectAnswerIdx { get; set; } //for update
 
     [Parameter]
     public EventCallback OnAddQuestion { get; set; }
@@ -43,12 +49,21 @@
         return int.Parse(Model.QuestionTypeId) == (int)QuestionTypeEnum.Essay || int.Parse(Model.QuestionTypeId) == (int)QuestionTypeEnum.FileUpload;
     }
 
-    private async Task OnAdd()
+    protected override void OnInitialized()
+    {
+        if (CorrectAnswerIdx != -1)
+        {
+            SelectedCorrectAnsIdx = CorrectAnswerIdx.ToString();
+        }
+    }
+
+    private async Task OnUpdate()
     {
         if (IsEssayOrFileUpload())
         {
-            await OnAddQuestion.InvokeAsync(Model);
-        } else
+            await OnAddQuestion.InvokeAsync();
+        }
+        else
         {
             if (string.IsNullOrEmpty(SelectedCorrectAnsIdx))
             {
@@ -58,7 +73,7 @@
             {
                 var idx = int.Parse(SelectedCorrectAnsIdx);
                 Model.PossibleAnswers[idx].IsCorrect = true;
-                await OnAddQuestion.InvokeAsync(Model);
+                await OnAddQuestion.InvokeAsync();
             }
         }
     }

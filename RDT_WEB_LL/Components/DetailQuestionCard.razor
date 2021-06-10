@@ -49,8 +49,9 @@
         }
     }
 
-    private async void OnUpdate()
+    private void OnUpdate()
     {
-        await JS.InvokeVoidAsync("alert", "Feature on progress");
+        string url = $"manage/questions/{question.Id}/update";
+        NavigationManager.NavigateTo(url);
     }
 }

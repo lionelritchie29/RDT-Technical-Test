@@ -19,6 +19,12 @@ namespace RDT_WEB_LL.Services
             _authService = authService;
         }
 
+        public Question Get(int questionid)
+        {
+            var question = _context.Questions.Include(q => q.PossibleAnswers).Where(q => q.Id == questionid).FirstOrDefault();
+            return question;
+        }
+
         public int Add(Question newQuestion)
         {
             _context.Questions.Add(newQuestion);

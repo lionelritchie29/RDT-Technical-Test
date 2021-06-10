@@ -1,4 +1,4 @@
-﻿@page "/manage/questions/add"
+﻿@page "/manage/questions/{id}/update"
 
 @using RDT_WEB_LL.Models
 @using RDT_WEB_LL.Models.Form_Models
@@ -11,8 +11,7 @@
 @inject IQuestionServices qService
 @inject NavigationManager NavigationManager
 
-
-<h3>Add New Question</h3>
+<h3>Update Question ID: @Id</h3>
 
 <div class="card primary-bg-dark">
     <div class="card-body">
@@ -31,7 +30,7 @@
                         <option value="" selected>---</option>
                         @foreach (var type in questionTypes)
                             {
-                                <option value=@type.Id>@type.Type</option>
+                            <option value=@type.Id>@type.Type</option>
                             }
                     </InputSelect>
                     <ValidationMessage For="() => model.QuestionTypeId" />
@@ -66,13 +65,19 @@
 
 @if (IsSecondStep)
 {
-    <QuestionFormChooseCorrectAnswer Model=@model OnAddQuestion=@AddNewQuestion />
+    <QuestionFormUpdateChooseCorrectAnswer Model=@model CorrectAnswerIdx=@correctAnswerIdx OnAddQuestion=@AddNewQuestion />
 }
 
 @code {
+    [Parameter]
+    public string Id { get; set; }
+    public int correctAnswerIdx { get; set; }
+
     public EditContext editContext { get; set; }
+    public Question question { get; set; }
     public int possibleAnswerInputcount = 0;
     AddQuestionFormModel model = new AddQuestionFormModel();
+
     public List<QuestionType> questionTypes = null;
     public bool IsSecondStep { get; set; } = false;
 
@@ -91,9 +96,32 @@
 
     protected override void OnInitialized()
     {
+        if (string.IsNullOrEmpty(Id)) return;
+
         questionTypes = qtService.GetAll();
+        question = qService.Get(int.Parse(Id));
+        FillInputField();
+
         editContext = new EditContext(model);
         editContext.OnFieldChanged += EditContext_OnFieldChanged;
+    }
+
+    private void FillInputField()
+    {
+        model.QuestionText = question.QuestionText;
+        model.QuestionTypeId = question.QuestionTypeId.ToString();
+
+        if (IsNotEssayOrFileUpload()) {
+            for (var i = 0; i< question.PossibleAnswers.Count; i++)
+            {
+                var j = i;
+                var ans = question.PossibleAnswers[j];
+
+                if (ans.IsCorrect == true) correctAnswerIdx = j;
+                possibleAnswerInputcount++;
+                model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = ans.Answer, IsCorrect = ans.IsCorrect });
+            }
+        }
     }
 
     private void AddAnswerList()
@@ -182,3 +210,4 @@
         model.PossibleAnswers = new List<PossibleAnswerFormModel>();
     }
 }
+
