@@ -39,6 +39,7 @@ namespace RDT_WEB_LL
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IParticipantService, ParticipantService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

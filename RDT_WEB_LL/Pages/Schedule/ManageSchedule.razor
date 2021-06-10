@@ -1,9 +1,24 @@
 ﻿@page "/manage/schedules"
 
+@using RDT_WEB_LL.Services 
+@using RDT_WEB_LL.Models 
+
+@inject IScheduleService scheduleService
+
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>ManageSchedule</h3>
+<h3>Manage Schedules</h3>
+
+@foreach (var schedule in schedules)
+{
+    <p>@schedule.UserId</p>
+}
 
 @code {
+    public List<Schedule> schedules { get; set; }
 
+    protected override void OnInitialized()
+    {
+        schedules = scheduleService.GetAll();
+    }
 }
