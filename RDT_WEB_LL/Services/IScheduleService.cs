@@ -13,5 +13,6 @@ namespace RDT_WEB_LL.Services
         public bool? IsDone(Schedule schedule);
         public bool? IsOnSchedule(Schedule schedule);
         public bool? IsTestTaken(Schedule schedule);
+        public int Add(Schedule schedule);
     }
 }

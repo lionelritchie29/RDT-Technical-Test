@@ -48,5 +48,12 @@ namespace RDT_WEB_LL.Services
             List<UserAnswer> userAnswers = _questionService.GetAnswersByUserId(schedule.UserId);
             return userAnswers.Count > 0;
         }
+
+        public int Add(Schedule schedule)
+        {
+            _context.Schedules.Add(schedule);
+            int status = _context.SaveChanges();
+            return status;
+        }
     }
 }

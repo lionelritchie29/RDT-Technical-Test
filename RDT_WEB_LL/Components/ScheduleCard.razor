@@ -41,8 +41,8 @@
     {
         if (scheduleService.IsNotStarted(schedule) == true) return "Not yet started";
         else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "On going and already taken";
-        else if (scheduleService.IsOnSchedule(schedule) == true && !scheduleService.IsTestTaken(schedule) == true) return "On going but not yet taken";
-        else if (scheduleService.IsDone(schedule) == true && !scheduleService.IsTestTaken(schedule) == false) return "Passed deadline but not yet taken";
+        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "On going but not yet taken";
+        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "Passed deadline but not yet taken";
         else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "Passed deadline and already taken";
         return "";
     }
@@ -51,8 +51,8 @@
     {
         if (scheduleService.IsNotStarted(schedule) == true) return "badge-secondary";
         else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
-        else if (scheduleService.IsOnSchedule(schedule) == true && !scheduleService.IsTestTaken(schedule) == true) return "badge-primary";
-        else if (scheduleService.IsDone(schedule) == true && !scheduleService.IsTestTaken(schedule) == false) return "badge-danger";
+        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "badge-primary";
+        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "badge-danger";
         else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
         return "";
     }
