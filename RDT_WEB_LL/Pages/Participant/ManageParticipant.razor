@@ -19,11 +19,16 @@
         <div>@participant.UserName</div>
         <div class="d-flex">
             @{ var schedule = GetScheduleByUserId(participant.Id); }
-            @if (IsScheduleTaken(schedule))
+            @if (schedule == null)
+            {
+                <p>Not scheduled yet</p>
+            }
+            else if (IsScheduleTaken(schedule) == true)
             {
                 <button class="btn btn-primary mr-3" @onclick="@(e => NavigateToResultPage(participant.Id))">View test status</button>
                 <button class="btn btn-primary" @onclick="@(e => NavigateToResultPage(participant.Id))">View test results</button>
-            } else
+            }
+            else
             {
                 <p>Test not yet started or has already passed deadline.</p>
             }
@@ -55,6 +60,6 @@
 
     private bool IsScheduleTaken(Schedule schedule)
     {
-        return (scheduleService.IsTestTaken(schedule) && scheduleService.IsOnSchedule(schedule)) || (scheduleService.IsTestTaken(schedule) && scheduleService.IsDone(schedule));
+        return (scheduleService.IsTestTaken(schedule) == true && scheduleService.IsOnSchedule(schedule) == true)  || (scheduleService.IsTestTaken(schedule) == true && scheduleService.IsDone(schedule) == true);
     }
 }

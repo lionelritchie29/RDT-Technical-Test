@@ -34,26 +34,26 @@
 
     private bool ShouldShowUpdateDeleteBtn(Schedule schedule)
     {
-        return scheduleService.IsNotStarted(schedule) || (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule));
+        return scheduleService.IsNotStarted(schedule) == true || (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false);
     }
 
     private string GetStatus(Schedule schedule)
     {
-        if (scheduleService.IsNotStarted(schedule)) return "Not yet started";
-        else if (scheduleService.IsOnSchedule(schedule) && scheduleService.IsTestTaken(schedule)) return "On going and already taken";
-        else if (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule)) return "On going but not yet taken";
-        else if (scheduleService.IsDone(schedule) && !scheduleService.IsTestTaken(schedule)) return "Passed deadline but not yet taken";
-        else if (scheduleService.IsDone(schedule) && scheduleService.IsTestTaken(schedule)) return "Passed deadline and already taken";
+        if (scheduleService.IsNotStarted(schedule) == true) return "Not yet started";
+        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "On going and already taken";
+        else if (scheduleService.IsOnSchedule(schedule) == true && !scheduleService.IsTestTaken(schedule) == true) return "On going but not yet taken";
+        else if (scheduleService.IsDone(schedule) == true && !scheduleService.IsTestTaken(schedule) == false) return "Passed deadline but not yet taken";
+        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "Passed deadline and already taken";
         return "";
     }
 
     private string GetStatusBadgeClass(Schedule schedule)
     {
-        if (scheduleService.IsNotStarted(schedule)) return "badge-secondary";
-        else if (scheduleService.IsOnSchedule(schedule) && scheduleService.IsTestTaken(schedule)) return "badge-success";
-        else if (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule)) return "badge-primary";
-        else if (scheduleService.IsDone(schedule) && !scheduleService.IsTestTaken(schedule)) return "badge-danger";
-        else if (scheduleService.IsDone(schedule) && scheduleService.IsTestTaken(schedule)) return "badge-success";
+        if (scheduleService.IsNotStarted(schedule) == true) return "badge-secondary";
+        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
+        else if (scheduleService.IsOnSchedule(schedule) == true && !scheduleService.IsTestTaken(schedule) == true) return "badge-primary";
+        else if (scheduleService.IsDone(schedule) == true && !scheduleService.IsTestTaken(schedule) == false) return "badge-danger";
+        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
         return "";
     }
 }

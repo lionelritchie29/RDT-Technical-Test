@@ -110,8 +110,8 @@ namespace RDT_WEB_LL.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "admin", "9f9437e7-31b6-43f2-ba5e-96a75337ae4f", "Admin", null },
-                    { "participant", "9cf43b80-8e8c-441a-9fc2-2a7369ce82e9", "Participant", null }
+                    { "admin", "9f9437e7-31b6-43f2-ba5e-96a75337ae4f", "Admin", "ADMIN" },
+                    { "participant", "9cf43b80-8e8c-441a-9fc2-2a7369ce82e9", "Participant", "PARTICIPANT" }
                 });
 
             migrationBuilder.InsertData(

@@ -198,8 +198,8 @@ namespace RDT_WEB_LL.Data
         private void SeedRole(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityRole>().HasData(
-               new IdentityRole { Id = "admin", Name = "Admin"},
-               new IdentityRole { Id = "participant", Name = "Participant"}
+               new IdentityRole { Id = "admin", Name = "Admin", NormalizedName = "ADMIN" },
+               new IdentityRole { Id = "participant", Name = "Participant", NormalizedName = "PARTICIPANT"}
                );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(

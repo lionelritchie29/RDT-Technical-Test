@@ -9,5 +9,6 @@ namespace RDT_WEB_LL.Services
     interface IParticipantService
     {
         public List<IdentityUser> GetAll();
+        public List<IdentityUser> GetNotScheduled();
     }
 }

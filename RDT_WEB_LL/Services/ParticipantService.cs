@@ -26,5 +26,20 @@ namespace RDT_WEB_LL.Services
                 select u).ToList();
             return participants;
         }
+
+        public List<IdentityUser> GetNotScheduled()
+        {
+            List<IdentityUser> participants = (
+                from u in _context.Users
+                join ur in _context.UserRoles on u.Id equals ur.UserId
+                join r in _context.Roles on ur.RoleId equals r.Id
+                where r.Id == "participant"
+                && !(
+                    from sc in _context.Schedules
+                    select sc.UserId
+                ).Contains(u.Id)
+                select u).ToList();
+            return participants;
+        }
     }
 }

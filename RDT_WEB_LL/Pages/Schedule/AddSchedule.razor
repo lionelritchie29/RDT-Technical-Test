@@ -1,5 +1,10 @@
 ﻿@page "/manage/schedules/add"
 
+@using RDT_WEB_LL.Services 
+@using Microsoft.AspNetCore.Identity
+
+@inject IParticipantService participantService
+
 <h3>Add Schedule</h3>
 
 <div class="card primary-bg-dark">
@@ -8,7 +13,11 @@
             <div class="form-group">
                 <label>Participant</label>
                 <select class="form-control">
-                    <option>Test</option>
+                    <option value="">--- SELECT A PARTICIPANT ---</option>
+                    @foreach(var participant in notScheduledParticipants)
+                    {
+                       <option value=@participant.Id>@participant.UserName</option>
+                    }
                 </select>
             </div>
 
@@ -32,4 +41,12 @@
 @code {
     public DateTime StartDate { get; set; } = DateTime.Now;
     public DateTime EndDate { get; set; } = DateTime.Now.AddHours(3);
+
+    public List<IdentityUser> notScheduledParticipants { get; set; }
+
+    protected override void OnInitialized()
+    {
+        notScheduledParticipants = participantService.GetNotScheduled();
+    }
+
 }
