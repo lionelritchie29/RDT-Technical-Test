@@ -2,6 +2,7 @@
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Components 
 
 @inject IScheduleService scheduleService
 @inject IQuestionServices questionService
@@ -14,30 +15,7 @@
     @foreach (var schedule in schedules)
     {
         <div class="col-6">
-            <div class="card primary-bg-dark mb-3">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <p>@schedule.User.UserName</p>
-
-                        <div>
-                            <span class="badge @(GetStatusBadgeClass(schedule))"> @(GetStatus(schedule)) </span>
-                        </div>
-                    </div>
-
-                    <ul class="list-group mt-3">
-                        <li class="list-group-item primary-bg-light-dark">Start date: @schedule.startDate</li>
-                        <li class="list-group-item primary-bg-light-dark">End date: @schedule.endDate</li>
-                    </ul>
-
-                    @if (ShouldShowUpdateDeleteBtn(schedule))
-                    {
-                        <div class="mt-3 d-flex justify-content-end">
-                            <button class="btn btn-primary mr-3">Update</button>
-                            <button class="btn btn-danger">Delete</button>
-                        </div>
-                    }
-                </div>
-            </div>
+            <ScheduleCard schedule=@schedule></ScheduleCard>
         </div>
     }
 </div>
@@ -49,51 +27,4 @@
     {
         schedules = scheduleService.GetAll();
     }
-
-    private bool IsNotStarted(Schedule schedule)
-    {
-        return DateTime.Compare(DateTime.Now, schedule.startDate) < 0;
-    }
-
-    private bool IsDone(Schedule schedule)
-    {
-        return DateTime.Compare(DateTime.Now, schedule.endDate) > 0;
-    }
-
-    private bool IsOnSchedule(Schedule schedule)
-    {
-        return DateTime.Compare(DateTime.Now, schedule.startDate) > 0 && DateTime.Compare(DateTime.Now, schedule.endDate) < 0;
-    }
-
-    private bool IsTestTaken(Schedule schedule)
-    {
-        List<UserAnswer> userAnswers = questionService.GetAnswersByUserId(schedule.UserId);
-        return userAnswers.Count > 0;
-    }
-
-    private bool ShouldShowUpdateDeleteBtn(Schedule schedule)
-        {
-        return IsNotStarted(schedule) || (IsOnSchedule(schedule) && !IsTestTaken(schedule));
-        }
-
-    private string GetStatus(Schedule schedule)
-    {
-        if (IsNotStarted(schedule)) return "Not yet started";
-        else if (IsOnSchedule(schedule) && IsTestTaken(schedule)) return "On going and already taken";
-        else if (IsOnSchedule(schedule) && !IsTestTaken(schedule)) return "On going but not yet taken";
-        else if (IsDone(schedule) && !IsTestTaken(schedule)) return "Passed deadline but not yet taken";
-        else if (IsDone(schedule) && IsTestTaken(schedule)) return "Passed deadline and already taken";
-        return "";
-    }
-
-    private string GetStatusBadgeClass(Schedule schedule)
-    {
-        if (IsNotStarted(schedule)) return "badge-secondary";
-        else if (IsOnSchedule(schedule) && IsTestTaken(schedule)) return "badge-success";
-        else if (IsOnSchedule(schedule) && !IsTestTaken(schedule)) return "badge-primary";
-        else if (IsDone(schedule) && !IsTestTaken(schedule)) return "badge-danger";
-        else if (IsDone(schedule) && IsTestTaken(schedule)) return "badge-success";
-        return "";
-    }
-
 }

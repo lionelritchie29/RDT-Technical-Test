@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RDT_WEB_LL.Services
 {
-    interface IQuestionServices
+    public interface IQuestionServices
     {
         public List<Question> GetAll();
         public int Add(Question newQuestion);

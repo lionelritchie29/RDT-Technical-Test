@@ -1,0 +1,59 @@
+﻿@using RDT_WEB_LL.Models 
+@using RDT_WEB_LL.Services
+
+@inject IScheduleService scheduleService 
+
+<div class="card primary-bg-dark mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <p>@schedule.User.UserName</p>
+
+            <div>
+                <span class="badge @(GetStatusBadgeClass(schedule))"> @(GetStatus(schedule)) </span>
+            </div>
+        </div>
+
+        <ul class="list-group mt-3">
+            <li class="list-group-item primary-bg-light-dark">Start date: @schedule.startDate</li>
+            <li class="list-group-item primary-bg-light-dark">End date: @schedule.endDate</li>
+        </ul>
+
+        @if (ShouldShowUpdateDeleteBtn(schedule))
+        {
+            <div class="mt-3 d-flex justify-content-end">
+                <button class="btn btn-primary mr-3">Update</button>
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Schedule schedule { get; set; }
+
+    private bool ShouldShowUpdateDeleteBtn(Schedule schedule)
+    {
+        return scheduleService.IsNotStarted(schedule) || (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule));
+    }
+
+    private string GetStatus(Schedule schedule)
+    {
+        if (scheduleService.IsNotStarted(schedule)) return "Not yet started";
+        else if (scheduleService.IsOnSchedule(schedule) && scheduleService.IsTestTaken(schedule)) return "On going and already taken";
+        else if (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule)) return "On going but not yet taken";
+        else if (scheduleService.IsDone(schedule) && !scheduleService.IsTestTaken(schedule)) return "Passed deadline but not yet taken";
+        else if (scheduleService.IsDone(schedule) && scheduleService.IsTestTaken(schedule)) return "Passed deadline and already taken";
+        return "";
+    }
+
+    private string GetStatusBadgeClass(Schedule schedule)
+    {
+        if (scheduleService.IsNotStarted(schedule)) return "badge-secondary";
+        else if (scheduleService.IsOnSchedule(schedule) && scheduleService.IsTestTaken(schedule)) return "badge-success";
+        else if (scheduleService.IsOnSchedule(schedule) && !scheduleService.IsTestTaken(schedule)) return "badge-primary";
+        else if (scheduleService.IsDone(schedule) && !scheduleService.IsTestTaken(schedule)) return "badge-danger";
+        else if (scheduleService.IsDone(schedule) && scheduleService.IsTestTaken(schedule)) return "badge-success";
+        return "";
+    }
+}
