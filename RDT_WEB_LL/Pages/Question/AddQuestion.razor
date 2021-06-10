@@ -37,14 +37,17 @@
                     <ValidationMessage For="() => model.QuestionTypeId" />
                 </div>
 
-                @if (model.QuestionTypeId != null && IsNotEssayOrFileUpload())
+                @if (model.QuestionTypeId != null && IsNotEssayOrFileUpload() && !IsBoolean())
                 {
                     <label>Possible Answer</label>
                     <div class="form-group">
                         @for (var i = 0; i < possibleAnswerInputcount; i++)
                         {
                             var j = i;
-                            <InputText @bind-Value=@model.PossibleAnswers[j].Value class="form-control mb-2" placeholder="Enter possible answer" />
+                            <div class="d-flex">
+                                <InputText @bind-Value=@model.PossibleAnswers[j].Value class="form-control mb-2" placeholder="Enter possible answer" />
+                                <div><button class="btn btn-outline-danger ml-3" @onclick="@(e => DeleteList(j))" @onclick:preventDefault="true">Delete</button></div>
+                            </div>
                             <ValidationMessage For="() => model.PossibleAnswers[j].Value" />
                         }
                     </div>
@@ -93,17 +96,34 @@
 
     private void AddAnswerList()
     {
-        if (possibleAnswerInputcount == 2 && IsBoolean()) return;
         possibleAnswerInputcount++;
         model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = " " });
         JS.InvokeVoidAsync("console.log", model.PossibleAnswers.Count());
+    }
+
+    private void DeleteList(int idx)
+    {
+        if (possibleAnswerInputcount == 1) return;
+        model.PossibleAnswers.RemoveAt(idx);
+        possibleAnswerInputcount--;
     }
 
     private void OnNext(EditContext edt)
     {
         if (edt.Validate())
         {
+            AddPossibleAnswerForBoolean();
             IsSecondStep = true;
+        }
+    }
+
+    private void AddPossibleAnswerForBoolean()
+    {
+        if (IsBoolean())
+        {
+            model.PossibleAnswers.RemoveAt(0); //remove the first input field
+            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "False" });
+            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "True" });
         }
     }
 
