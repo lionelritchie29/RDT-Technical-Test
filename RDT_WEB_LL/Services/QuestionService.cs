@@ -11,10 +11,12 @@ namespace RDT_WEB_LL.Services
     public class QuestionService : IQuestionServices
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAuthService _authService;
 
-        public QuestionService(ApplicationDbContext context)
+        public QuestionService(ApplicationDbContext context, IAuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         public int Add(Question newQuestion)
@@ -34,6 +36,9 @@ namespace RDT_WEB_LL.Services
         public int SaveUserAnswers(List<UserAnswer> answers)
         {
             _context.UserAnswers.AddRange(answers);
+            var schedule = _context.Schedules.Where(s => s.UserId == _authService.GetCurrentUserId()).FirstOrDefault();
+            schedule.TakenOn = DateTime.Now;
+
             int status = _context.SaveChanges();
             return status;
         }

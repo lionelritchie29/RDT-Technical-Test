@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RDT_WEB_LL.Services
 {
-    interface IScheduleService
+    public interface IScheduleService
     {
         public List<Schedule> GetAll();
         public bool IsNotStarted(Schedule schedule);

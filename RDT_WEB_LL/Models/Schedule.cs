@@ -13,6 +13,7 @@ namespace RDT_WEB_LL.Models
         public IdentityUser User { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
+        public DateTime? TakenOn { get; set; }
         public string Status { get; set; }
 
     }
