@@ -83,5 +83,10 @@ namespace RDT_WEB_LL.Services
             int status = _context.SaveChanges();
             return status;
         }
+
+        public List<UserAnswer> GetAnswersByUserId(string userId)
+        {
+            return _context.UserAnswers.Where(ans => ans.UserId == userId).ToList();
+        }
     }
 }
