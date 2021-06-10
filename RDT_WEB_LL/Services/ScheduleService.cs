@@ -62,5 +62,17 @@ namespace RDT_WEB_LL.Services
             int status = _context.SaveChanges();
             return status;
         }
+
+        public Schedule Get(int scheduleId)
+        {
+            return _context.Schedules.Where(s => s.Id == scheduleId).FirstOrDefault();
+        }
+
+        public int Update(Schedule schedule)
+        {
+            _context.Schedules.Update(schedule);
+            int status = _context.SaveChanges();
+            return status;
+        }
     }
 }

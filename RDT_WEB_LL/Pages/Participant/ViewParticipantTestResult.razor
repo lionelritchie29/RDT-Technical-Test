@@ -70,7 +70,7 @@
     {
         if (notVerifiedAnswerCount > 0) return "Some answers need to be verified first, please verify ASAP";
         else if (calculateScore() >= 60) return "This participant passsed the test because his/her score is greater than or equals to 60";
-        else return "This participant passsed the test because his/her score is less to 60";
+        else return "This participant failed the test because his/her score is less than 60";
     }
 
     private string GetResultClass()
