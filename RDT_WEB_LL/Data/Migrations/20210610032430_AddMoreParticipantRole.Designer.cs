@@ -10,8 +10,8 @@ using RDT_WEB_LL.Data;
 namespace RDT_WEB_LL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210606080250_SeedUserAndRole")]
-    partial class SeedUserAndRole
+    [Migration("20210610032430_AddMoreParticipantRole")]
+    partial class AddMoreParticipantRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,13 +51,13 @@ namespace RDT_WEB_LL.Data.Migrations
                         new
                         {
                             Id = "admin",
-                            ConcurrencyStamp = "b72b20dc-24d4-4b0e-9f84-38fa5120633a",
+                            ConcurrencyStamp = "7a957f0f-bc21-4d7f-b36f-2326a05a5adb",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = "participant",
-                            ConcurrencyStamp = "a3166b86-a3de-40b0-87bf-d2cb3dd30746",
+                            ConcurrencyStamp = "424f98fe-cadd-45b9-b33e-504fa410e915",
                             Name = "Participant"
                         });
                 });
@@ -155,29 +155,145 @@ namespace RDT_WEB_LL.Data.Migrations
                         {
                             Id = "af3246f8-2bc5-404b-8212-3a5005c98790",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ff401096-8d27-44e4-9fb7-2ce9304651fc",
+                            ConcurrencyStamp = "b8cb9336-6cfc-4e33-a8ac-73e590960fc3",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEL3XGVeMIlgdh1r/Z8gq/5J0OZbTFMbxMySs3fI9Qw/GxgqrrgSiV0vQ01g44vDHRQ==",
+                            NormalizedEmail = "ADMIN@MAIL.COM",
+                            NormalizedUserName = "ADMIN@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEC8kfqMt1vSV/kJk4CmY0qHmSWfgfTTnclouOtzFAUlXATTviBPLYmBfryFngjePlg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "758b567f-1ce9-4d57-87eb-d60d72fce6ce",
+                            SecurityStamp = "a9a1b902-5d97-44fe-a290-0e20d6bd0bae",
                             TwoFactorEnabled = false,
-                            UserName = "Admin"
+                            UserName = "admin@mail.com"
                         },
                         new
                         {
                             Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c055af86-0a1b-411c-8a0f-cd58839b2e13",
+                            ConcurrencyStamp = "860d4c40-975c-4259-ae9e-05ca2e9d645f",
                             Email = "brandon@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEO80JUwNVeudo2IHsmoM4JfngY6YTxhjjyWmNWqEoyajPMxGIWxG1DAeyZqsP5qw4g==",
+                            NormalizedEmail = "BRANDON@MAIL.COM",
+                            NormalizedUserName = "BRANDON@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAENyYjug/upo+a53b/AtSz4VMjvVMQjelmnrdevbRYlM3jW9IOLKEKmAJiemFsRWlbA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d20db892-46d3-4a88-9212-befb7bdd44ae",
+                            SecurityStamp = "80f859be-edec-4984-ab21-498ea87a8751",
                             TwoFactorEnabled = false,
-                            UserName = "Brandon Julio"
+                            UserName = "brandon@mail.com"
+                        },
+                        new
+                        {
+                            Id = "7c17889b-010f-41b3-b8d6-3521a10b1915",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ead4a404-5f80-4da9-bd93-bfe5afe18397",
+                            Email = "stanley@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "STANLEY@MAIL.COM",
+                            NormalizedUserName = "STANLEY@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEKstYt7QutAzk/fJlMKgInf7kA7Yd7EqpDKzw129rIzesGc+EAU0f5gt4HBhhgFqQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "aa0ab923-fac1-4193-8c20-352c7e137f8e",
+                            TwoFactorEnabled = false,
+                            UserName = "stanley@mail.com"
+                        },
+                        new
+                        {
+                            Id = "ff2fd92b-7657-4855-a9b9-70977cd91b3e",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "cc3c8694-4612-4777-aa81-d573b75a2f0b",
+                            Email = "clarissa@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "CLARISSA@MAIL.COM",
+                            NormalizedUserName = "CLARISSA@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAECM0+zxXNrZSxuCgaTdWIJMONRbDTV7chkKJPeNe8lR6+IBROs7NO5fOj/mh49TC8A==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "322cabc1-2914-4194-89e4-f249d394c27b",
+                            TwoFactorEnabled = false,
+                            UserName = "clarissa@mail.com"
+                        },
+                        new
+                        {
+                            Id = "c12807d5-b1cd-45f0-85ee-6a293e07989d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "495acbec-bb66-4625-832e-d148d36a0b11",
+                            Email = "gaby@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "GABY@MAIL.COM",
+                            NormalizedUserName = "GABY@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJuqsFarkFEQ5mSGkbjBkwoI7LK/fxvjMIQCao02fzccKchKwnjY7pywhC5pu96fHw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "06d5200a-3629-4d68-8fb8-7bd876ceaf17",
+                            TwoFactorEnabled = false,
+                            UserName = "gaby@mail.com"
+                        },
+                        new
+                        {
+                            Id = "035c6e49-5ac7-4eb7-8e96-2fee62b29289",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "37f82a51-a573-4dec-be1f-772a5995fa3c",
+                            Email = "cleo@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "CLEO@MAIL.COM",
+                            NormalizedUserName = "CLEO@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJiflqnYFuGhc9JWIdg7IB/EGYHrHWJhDzFpKrbrCm6gjI06Fe/XHGbxa6vp2BV/vQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "2c9104eb-1458-4dae-a1e2-98a0c76690aa",
+                            TwoFactorEnabled = false,
+                            UserName = "cleo@mail.com"
+                        },
+                        new
+                        {
+                            Id = "64792414-6240-4f4a-a06b-e519464f4fc0",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f6bbc0d2-c7c5-4397-a19b-dfab64e437c9",
+                            Email = "vincent@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "VINCENT@MAIL.COM",
+                            NormalizedUserName = "VINCENT@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELU0h391PGXVSoNz9ypooni++ayCm6oEc7IVuU1/PKtOqbew3CsLWT7KOylhudPh+g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "972bb125-6654-4bb6-9b3e-bb0cc07050ee",
+                            TwoFactorEnabled = false,
+                            UserName = "vincent@mail.com"
+                        },
+                        new
+                        {
+                            Id = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6cc796f5-ec2e-4ce1-8fc3-5ed9be68c2d6",
+                            Email = "jepe@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JEPE@MAIL.COM",
+                            NormalizedUserName = "JEPE@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEKtE0zUwUZpoisB4k8/iaxB8LCRCNHRW8vdbi1k6KB41Iq7fIaWB1gjGC5fxFiEYg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a565c8f0-a93e-4893-bece-3c85af1f388c",
+                            TwoFactorEnabled = false,
+                            UserName = "jepe@mail.com"
+                        },
+                        new
+                        {
+                            Id = "b63985bb-0aad-4ba2-abec-2570974c04ed",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6e4f70e5-2d7c-43a6-a181-a680df6751c1",
+                            Email = "onel@mail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ONEL@MAIL.COM",
+                            NormalizedUserName = "ONEL@MAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN6oywZ4D9Yda6sZ4/iR7YQKuRcyVQq7m0/Qe6ELSHPuIdASPe8KmeTazraEuKVOIg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4e46964f-a616-47ce-88dd-0c60fa2231ec",
+                            TwoFactorEnabled = false,
+                            UserName = "onel@mail.com"
                         });
                 });
 
@@ -252,6 +368,41 @@ namespace RDT_WEB_LL.Data.Migrations
                         new
                         {
                             UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "7c17889b-010f-41b3-b8d6-3521a10b1915",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "ff2fd92b-7657-4855-a9b9-70977cd91b3e",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "c12807d5-b1cd-45f0-85ee-6a293e07989d",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "035c6e49-5ac7-4eb7-8e96-2fee62b29289",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "64792414-6240-4f4a-a06b-e519464f4fc0",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005",
+                            RoleId = "participant"
+                        },
+                        new
+                        {
+                            UserId = "b63985bb-0aad-4ba2-abec-2570974c04ed",
                             RoleId = "participant"
                         });
                 });
@@ -537,6 +688,30 @@ namespace RDT_WEB_LL.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("RDT_WEB_LL.Models.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("endDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("startDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Schedules");
+                });
+
             modelBuilder.Entity("RDT_WEB_LL.Models.UserAnswer", b =>
                 {
                     b.Property<string>("UserId")
@@ -548,7 +723,7 @@ namespace RDT_WEB_LL.Data.Migrations
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsCorrect")
+                    b.Property<bool?>("IsCorrect")
                         .HasColumnType("bit");
 
                     b.HasKey("UserId", "QuestionId");
@@ -612,7 +787,7 @@ namespace RDT_WEB_LL.Data.Migrations
             modelBuilder.Entity("RDT_WEB_LL.Models.PossibleAnswer", b =>
                 {
                     b.HasOne("RDT_WEB_LL.Models.Question", "Question")
-                        .WithMany()
+                        .WithMany("PossibleAnswers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -648,6 +823,11 @@ namespace RDT_WEB_LL.Data.Migrations
                     b.Navigation("Question");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RDT_WEB_LL.Models.Question", b =>
+                {
+                    b.Navigation("PossibleAnswers");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,6 +15,8 @@ namespace RDT_WEB_LL.Data
         public DbSet<PossibleAnswer> PossibleAnswers { get; set; }
         public DbSet<UserAnswer> UserAnswers { get; set; }
 
+        public DbSet<Schedule> Schedules { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -98,7 +100,7 @@ namespace RDT_WEB_LL.Data
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var participant = new IdentityUser
+            var participant1 = new IdentityUser
             {
                 Id = "dc954b45-44ef-4404-b8d6-d502ec9de9ec",
                 UserName = "brandon@mail.com",
@@ -108,10 +110,88 @@ namespace RDT_WEB_LL.Data
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            hasher.HashPassword(admin, "Admin123!");
-            hasher.HashPassword(participant, "Participant123!");
+            var participant2 = new IdentityUser
+            {
+                Id = "7c17889b-010f-41b3-b8d6-3521a10b1915",
+                UserName = "stanley@mail.com",
+                NormalizedUserName = "STANLEY@MAIL.COM",
+                Email = "stanley@mail.com",
+                NormalizedEmail = "STANLEY@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
 
-            modelBuilder.Entity<IdentityUser>().HasData(admin, participant);
+            var participant3 = new IdentityUser
+            {
+                Id = "ff2fd92b-7657-4855-a9b9-70977cd91b3e",
+                UserName = "clarissa@mail.com",
+                NormalizedUserName = "CLARISSA@MAIL.COM",
+                Email = "clarissa@mail.com",
+                NormalizedEmail = "CLARISSA@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var participant4 = new IdentityUser
+            {
+                Id = "c12807d5-b1cd-45f0-85ee-6a293e07989d",
+                UserName = "gaby@mail.com",
+                NormalizedUserName = "GABY@MAIL.COM",
+                Email = "gaby@mail.com",
+                NormalizedEmail = "GABY@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var participant5 = new IdentityUser
+            {
+                Id = "035c6e49-5ac7-4eb7-8e96-2fee62b29289",
+                UserName = "cleo@mail.com",
+                NormalizedUserName = "CLEO@MAIL.COM",
+                Email = "cleo@mail.com",
+                NormalizedEmail = "CLEO@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var participant6 = new IdentityUser
+            {
+                Id = "64792414-6240-4f4a-a06b-e519464f4fc0",
+                UserName = "vincent@mail.com",
+                NormalizedUserName = "VINCENT@MAIL.COM",
+                Email = "vincent@mail.com",
+                NormalizedEmail = "VINCENT@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var participant7 = new IdentityUser
+            {
+                Id = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005",
+                UserName = "jepe@mail.com",
+                NormalizedUserName = "JEPE@MAIL.COM",
+                Email = "jepe@mail.com",
+                NormalizedEmail = "JEPE@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            var participant8 = new IdentityUser
+            {
+                Id = "b63985bb-0aad-4ba2-abec-2570974c04ed",
+                UserName = "onel@mail.com",
+                NormalizedUserName = "ONEL@MAIL.COM",
+                Email = "onel@mail.com",
+                NormalizedEmail = "ONEL@MAIL.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            admin.PasswordHash = hasher.HashPassword(admin, "Admin123!");
+            participant1.PasswordHash = hasher.HashPassword(participant1, "Bran123!");
+            participant2.PasswordHash = hasher.HashPassword(participant2, "Stan123!");
+            participant3.PasswordHash = hasher.HashPassword(participant3, "Clar123!");
+            participant4.PasswordHash = hasher.HashPassword(participant4, "Gaby123!");
+            participant5.PasswordHash = hasher.HashPassword(participant5, "Cleo123!");
+            participant6.PasswordHash = hasher.HashPassword(participant6, "Vincent123!");
+            participant7.PasswordHash = hasher.HashPassword(participant7, "Jepe123!");
+            participant8.PasswordHash = hasher.HashPassword(participant8, "Onel123!");
+
+
+            modelBuilder.Entity<IdentityUser>().HasData(admin, participant1, participant2, participant3, participant4, participant5, participant6, participant7, participant8);
         }
 
         private void SeedRole(ModelBuilder modelBuilder)
@@ -123,7 +203,14 @@ namespace RDT_WEB_LL.Data
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string> { RoleId = "admin", UserId = "af3246f8-2bc5-404b-8212-3a5005c98790" },
-                new IdentityUserRole<string> { RoleId = "participant", UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec" }
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "dc954b45-44ef-4404-b8d6-d502ec9de9ec" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "7c17889b-010f-41b3-b8d6-3521a10b1915" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "ff2fd92b-7657-4855-a9b9-70977cd91b3e" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "c12807d5-b1cd-45f0-85ee-6a293e07989d" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "035c6e49-5ac7-4eb7-8e96-2fee62b29289" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "64792414-6240-4f4a-a06b-e519464f4fc0" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "0cc4ae1a-0d6a-48b4-bb03-d4eeb8000005" },
+                new IdentityUserRole<string> { RoleId = "participant", UserId = "b63985bb-0aad-4ba2-abec-2570974c04ed" }
                 );
         }
     }
