@@ -15,7 +15,6 @@ namespace RDT_WEB_LL.Services
         public List<UserAnswer> GetUserAnswers(string userId);
         public int Delete(Question question);
         public int UpdateAnswerCorrectStatus(UserAnswer answer, bool isCorrect);
-
         public List<UserAnswer> GetAnswersByUserId(string userId);
     }
 }

@@ -55,5 +55,12 @@ namespace RDT_WEB_LL.Services
             int status = _context.SaveChanges();
             return status;
         }
+
+        public int Delete(Schedule schedule)
+        {
+            _context.Schedules.Remove(schedule);
+            int status = _context.SaveChanges();
+            return status;
+        }
     }
 }

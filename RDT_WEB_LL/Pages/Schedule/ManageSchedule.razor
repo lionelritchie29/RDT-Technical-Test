@@ -2,7 +2,7 @@
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Models
-@using RDT_WEB_LL.Components 
+@using RDT_WEB_LL.Components
 
 @inject IScheduleService scheduleService
 @inject IQuestionServices questionService
@@ -22,8 +22,8 @@
 <div class="row">
     @foreach (var schedule in schedules)
     {
-        <div class="col-6">
-            <ScheduleCard schedule=@schedule></ScheduleCard>
+        <div class="col-6" @key=@schedule>
+            <ScheduleCard schedule=@schedule OnDeleteCallback=RemoveDeletedScheduleFromList></ScheduleCard>
         </div>
     }
 </div>
@@ -34,5 +34,10 @@
     protected override void OnInitialized()
     {
         schedules = scheduleService.GetAll();
+    }
+
+    private void RemoveDeletedScheduleFromList(Schedule schedule)
+    {
+        schedules.Remove(schedule);
     }
 }
