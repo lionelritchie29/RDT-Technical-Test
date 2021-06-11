@@ -2,16 +2,23 @@
 
 @attribute [Authorize(Roles = "Admin, Participant")]
 
+@using System.Threading
+
 @inject IQuestionServices questionService
 @inject RDT_WEB_LL.Data.ApplicationDbContext context
-@inject IAuthService authService 
-@inject IJSRuntime JS 
+@inject IAuthService authService
+@inject IJSRuntime JS
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Components
-@using RDT_WEB_LL.Models 
+@using RDT_WEB_LL.Models
 
-<h3>Nationality test</h3>
+<div class="d-flex justify-content-between">
+    <h3>Nationality test</h3>
+    <div>
+        @ServerTime
+    </div>
+</div>
 
 <section class="container-fluid">
     <form>
@@ -34,22 +41,44 @@
 @code {
     public List<RDT_WEB_LL.Models.Question> questions { get; set; }
     public List<UserAnswer> userAnswers { get; set; }
+    public DateTime ServerTime { get; set; }
+
+    private Timer timer;
 
     protected override void OnInitialized()
     {
+        ServerTime = DateTime.Now;
         questions = questionService.GetAll();
         userAnswers = new List<UserAnswer>();
+
+        StartTimer();
+    }
+
+    private void StartTimer()
+    {
+        var autoEvent = new AutoResetEvent(false);
+        timer = new Timer((e) => IncrementTime(), autoEvent, 0, 1000);
+    }
+
+    private void IncrementTime()
+    {
+        InvokeAsync(() =>
+        {
+            ServerTime = DateTime.Now;
+            StateHasChanged();
+        });
     }
 
     private int AddNewAnswerToList(int questionid)
     {
-        userAnswers.Add(new UserAnswer { UserId = authService.GetCurrentUserId(), QuestionId = questionid});
+        userAnswers.Add(new UserAnswer { UserId = authService.GetCurrentUserId(), QuestionId = questionid });
         int insertedIdx = userAnswers.Count - 1;
         return insertedIdx;
     }
 
     private async void OnSubmit()
     {
+        await timer.DisposeAsync();
         questionService.SaveUserAnswers(userAnswers);
         await JS.InvokeVoidAsync("alert", "Succesfully saved answer");
 
