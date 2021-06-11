@@ -94,5 +94,6 @@
         await serverTimeComponent.timer.DisposeAsync();
         questionService.SaveUserAnswers(userAnswers);
         await JS.InvokeVoidAsync("alert", "Succesfully saved answer");
+        navManager.NavigateTo("");
     }
 }

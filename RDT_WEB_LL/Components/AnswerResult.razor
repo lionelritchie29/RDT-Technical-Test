@@ -1,8 +1,12 @@
-﻿@using RDT_WEB_LL.Models 
+﻿@using RDT_WEB_LL.Models
 @using RDT_WEB_LL.Services
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
 
-@inject IQuestionServices questionService   
+@inject IQuestionServices questionService
 @inject IJSRuntime JS
+@inject IWebHostEnvironment env
+@inject IFileService fileService
 
 <div class="card mb-3 primary-bg-dark">
     <div class="card-body">
@@ -17,11 +21,15 @@
                 @answer.Answer
             </div>
 
-            @if (IsEssayOrFileUpload() && answer.IsCorrect == null)
+            @if ((IsEssay() || IsFileUpload()) && answer.IsCorrect == null)
             {
                 <div class="d-flex justify-content-end mt-4">
-                    <button class="btn btn-success mr-2" @onclick="@(e => UpdateCorrectStatus(true))">Mark as correct</button>
-                    <button class="btn btn-danger" @onclick="@(e => UpdateCorrectStatus(false))">Mark as incorrect</button>
+                    <button class="btn btn-success" @onclick="@(e => UpdateCorrectStatus(true))">Mark as correct</button>
+                    <button class="btn btn-danger ml-2" @onclick="@(e => UpdateCorrectStatus(false))">Mark as incorrect</button>
+                    @if (IsFileUpload())
+                    {
+                        <a href="@(GetDownloadPath())" target="_blank" class="btn btn-primary ml-2">Download file</a>
+                    }
                 </div>
             }
         </div>
@@ -40,20 +48,26 @@
 
     private string SetBadgeColorClass()
     {
-        if (IsEssayOrFileUpload() && answer.IsCorrect == null) return "badge-secondary";
+        if ((IsEssay() || IsFileUpload()) && answer.IsCorrect == null) return "badge-secondary";
         return answer.IsCorrect == true ? "badge-success" : "badge-danger";
     }
 
     private string SetAnswerStatus()
     {
-        if (IsEssayOrFileUpload() && answer.IsCorrect == null) return "Need manual correction";
+        if ((IsEssay() || IsFileUpload()) && answer.IsCorrect == null) return "Need manual correction";
         return answer.IsCorrect == true ? "Correct" : "Incorrect";
     }
 
-    private bool IsEssayOrFileUpload()
+    private bool IsEssay()
     {
         int questionTypeId = answer.Question.QuestionTypeId;
-        return questionTypeId == (int)QuestionTypeEnum.Essay || questionTypeId == (int)QuestionTypeEnum.FileUpload;
+        return questionTypeId == (int)QuestionTypeEnum.Essay;
+    }
+
+    private bool IsFileUpload()
+    {
+        int questionTypeId = answer.Question.QuestionTypeId;
+        return questionTypeId == (int)QuestionTypeEnum.FileUpload;
     }
 
     private async void UpdateCorrectStatus(bool isCorrect)
@@ -71,11 +85,18 @@
             answer.IsCorrect = true;
             await answerCorrectStatusUpdated.InvokeAsync(true);
             await JS.InvokeVoidAsync("alert", "Answer marked as correct succesfully");
-        } else
+        }
+        else
         {
             answer.IsCorrect = false;
             await answerCorrectStatusUpdated.InvokeAsync(false);
             await JS.InvokeVoidAsync("alert", "Answer marked as incorrect succesfully");
         }
+    }
+
+    private string GetDownloadPath()
+    {
+        var fileName = answer.Answer;
+        return $"download/{answer.UserId}/{fileName}";
     }
 }

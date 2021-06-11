@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RDT_WEB_LL.Services
 {
-    interface IFileService
+    public interface IFileService
     {
         public void Save(IBrowserFile file);
         public string GetUploadedDirectoryPath(string userId, string fileName);

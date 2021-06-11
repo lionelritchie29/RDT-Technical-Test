@@ -7,10 +7,16 @@
 
 @inject IQuestionServices questionService
 @inject IParticipantService participantService
+@inject NavigationManager navManager
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Test result for @user.NormalizedUserName</h3>
+<div class="d-flex justify-content-between mb-4">
+    <h3>Answer Status of @user.NormalizedUserName</h3>
+    <div>
+        <button class="btn btn-primary" @onclick=@OnViewStatus>View answer status</button>
+    </div>
+</div>
 
 <h4 class="mt-4">Result</h4>
 <div class="jumbotron mb-4 @(GetResultClass())">
@@ -116,6 +122,12 @@
     private double calculateScore()
     {
         return ((double)correctAnswerCount / (double)questionCount) * 100;
+    }
+
+    private void OnViewStatus()
+    {
+        string url = $"manage/participants/{Id}/status";
+        navManager.NavigateTo(url);
     }
 
 }
