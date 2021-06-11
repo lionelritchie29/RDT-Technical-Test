@@ -72,7 +72,7 @@
 
     private async void UpdateCorrectStatus(bool isCorrect)
     {
-        int status = questionService.UpdateAnswerCorrectStatus(answer, isCorrect);
+        int status = await questionService.UpdateAnswerCorrectStatus(answer, isCorrect);
 
         if (status < 0)
         {

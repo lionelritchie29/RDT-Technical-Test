@@ -8,16 +8,16 @@ namespace RDT_WEB_LL.Services
 {
     public interface IScheduleService
     {
-        public List<Schedule> GetAll();
-        public Schedule Get(int scheduleId);
-        public Schedule GetByUserId(string userId);
+        public Task<List<Schedule>> GetAll();
+        public Task<Schedule> Get(int scheduleId);
+        public Task<Schedule> GetByUserId(string userId);
         public bool? IsNotStarted(Schedule schedule);
         public bool? IsDone(Schedule schedule);
         public bool? IsOnSchedule(Schedule schedule);
-        public bool? IsTestTaken(Schedule schedule);
-        public int Add(Schedule schedule);
-        public int Delete(Schedule schedule);
-        public int Update(Schedule schedule);
-        public string GetStatus(Schedule schedule, ScheduleStatus status);
+        public Task<bool?> IsTestTaken(Schedule schedule);
+        public Task<int> Add(Schedule schedule);
+        public Task<int> Delete(Schedule schedule);
+        public Task<int> Update(Schedule schedule);
+        public Task<string> GetStatus(Schedule schedule, ScheduleStatus status);
     }
 }

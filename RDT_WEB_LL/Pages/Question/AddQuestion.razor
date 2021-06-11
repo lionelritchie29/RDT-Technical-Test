@@ -5,6 +5,7 @@
 @using RDT_WEB_LL.Services
 @using Microsoft.Extensions.Logging
 @using RDT_WEB_LL.Components.Question_Form
+@using RDT_WEB_LL.Components
 
 @inject IJSRuntime JS
 @inject IQuestionTypeService qtService
@@ -16,7 +17,11 @@
 
 <div class="card primary-bg-dark">
     <div class="card-body">
-        @if (questionTypes != null)
+        @if (questionTypes == null)
+        {
+            <Loading></Loading>
+        }
+        else
         {
             <EditForm OnSubmit=@OnNext EditContext=@editContext>
                 <ObjectGraphDataAnnotationsValidator />
@@ -31,7 +36,7 @@
                         <option value="" selected>---</option>
                         @foreach (var type in questionTypes)
                             {
-                                <option value=@type.Id>@type.Type</option>
+                            <option value=@type.Id>@type.Type</option>
                             }
                     </InputSelect>
                     <ValidationMessage For="() => model.QuestionTypeId" />
@@ -89,9 +94,9 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        questionTypes = qtService.GetAll();
+        questionTypes = await qtService.GetAll();
         editContext = new EditContext(model);
         editContext.OnFieldChanged += EditContext_OnFieldChanged;
     }
@@ -128,7 +133,7 @@
         }
     }
 
-    private void AddNewQuestion()
+    private async void AddNewQuestion()
     {
         if (string.IsNullOrEmpty(model.QuestionTypeId)) return;
         var hasCorrectAnswer = IsNotEssayOrFileUpload();
@@ -149,12 +154,12 @@
             {
                 possibleAnswers.Add(new PossibleAnswer { Answer = ans.Value, IsCorrect = false, QuestionId = insertedQuestionId });
             }
-            qService.AddAnswers(possibleAnswers);
+            await qService.AddAnswers(possibleAnswers);
         }
 
         clearForm();
         IsSecondStep = false;
-        JS.InvokeVoidAsync("alert", "Succesfully added new question");
+        await JS.InvokeVoidAsync("alert", "Succesfully added new question");
         NavigationManager.NavigateTo("manage/questions");
     }
 

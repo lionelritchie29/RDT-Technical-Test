@@ -44,7 +44,7 @@
         if (confirmed)
         {
             await OnDeleteCallback.InvokeAsync(question);
-            questionService.Delete(question);
+            await questionService.Delete(question);
             await JS.InvokeVoidAsync("alert", "Delete success");
         }
     }

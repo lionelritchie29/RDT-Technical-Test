@@ -19,29 +19,29 @@
 
 @if (questions is null)
 {
-    <p>Loading data...</p>
+    <Loading></Loading>
 }
 else
 {
-<div>
     <div>
-        <div class="mt-3">
-            <DetailQuestionCard question=@selectedQuestion OnDeleteCallback=@updateList></DetailQuestionCard>
+        <div>
+            <div class="mt-3">
+                <DetailQuestionCard question=@selectedQuestion OnDeleteCallback=@updateList></DetailQuestionCard>
+            </div>
+        </div>
+        <div>
+            <div class="row mt-3">
+                @foreach (var q in questions)
+                {
+                    <div class="col-4 mb-4" @key=q>
+                        <QuestionCard question=@q>
+                            <QuestionCardManageContent question="@q" OnShowDetail="OnShowQuestionDetail"></QuestionCardManageContent>
+                        </QuestionCard>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-    <div>
-        <div class="row mt-3">
-            @foreach (var q in questions)
-            {
-                <div class="col-4 mb-4" @key=q>
-                    <QuestionCard question=@q>
-                        <QuestionCardManageContent question="@q" OnShowDetail="OnShowQuestionDetail"></QuestionCardManageContent>
-                    </QuestionCard>
-                </div>
-            }
-        </div>
-    </div>
-</div>
 }
 
 
@@ -50,9 +50,9 @@ else
 
     Question selectedQuestion = null;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        questions = questionService.GetAll();
+        questions = await questionService.GetAll();
     }
 
     protected void OnShowQuestionDetail(int id)

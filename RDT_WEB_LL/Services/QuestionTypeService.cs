@@ -16,9 +16,9 @@ namespace RDT_WEB_LL.Services
             _context = context;
         }
 
-        public List<QuestionType> GetAll()
+        public async Task<List<QuestionType>> GetAll()
         {
-            return _context.QuestionTypes.ToList();
+            return await _context.QuestionTypes.ToListAsync();
         }
     }
 }

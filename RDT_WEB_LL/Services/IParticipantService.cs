@@ -8,9 +8,9 @@ namespace RDT_WEB_LL.Services
 {
     interface IParticipantService
     {
-        public List<IdentityUser> GetAll();
-        public List<IdentityUser> GetNotScheduled();
-        public IdentityUser GetParticipantById(string userId);
-        public int Delete(IdentityUser participant);
+        public Task<List<IdentityUser>> GetAll();
+        public Task<List<IdentityUser>> GetNotScheduled();
+        public Task<IdentityUser> GetParticipantById(string userId);
+        public Task<int> Delete(IdentityUser participant);
     }
 }

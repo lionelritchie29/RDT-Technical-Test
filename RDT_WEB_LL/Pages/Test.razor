@@ -14,12 +14,16 @@
 @using RDT_WEB_LL.Components
 @using RDT_WEB_LL.Models
 
-@if (questions != null)
+@if (questions == null)
+{
+    <Loading></Loading>
+}
+else
 {
     <div class="d-flex justify-content-between">
         <h3>Nationality test</h3>
         <div>
-            <ServerTime @ref="serverTimeComponent"/>
+            <ServerTime @ref="serverTimeComponent" />
         </div>
     </div>
 
@@ -47,21 +51,22 @@
     public List<UserAnswer> userAnswers { get; set; }
     private ServerTime serverTimeComponent;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        if (Authenticate())
+        var isAuthenticated = await Authenticate();
+        if (isAuthenticated)
         {
-            questions = questionService.GetAll();
+            questions = await questionService.GetAll();
             userAnswers = new List<UserAnswer>();
         }
         else
         {
-            JS.InvokeVoidAsync("alert", "You are not authorized or not eligible to take the test");
+            await JS.InvokeVoidAsync("alert", "You are not authorized or not eligible to take the test");
             navManager.NavigateTo("");
         }
     }
 
-    private bool Authenticate()
+    private async Task<bool> Authenticate()
     {
         var currentUserId = authService.GetCurrentUserId();
         if (currentUserId == null)
@@ -70,15 +75,16 @@
         }
         else
         {
-            var schedule = scheduleService.GetByUserId(currentUserId);
-            if (IsEligible(schedule)) return true;
+            var schedule = await scheduleService.GetByUserId(currentUserId);
+            var isEligible = await IsEligible(schedule);
+            if (isEligible) return true;
             return false;
         }
     }
 
-    private bool IsEligible(RDT_WEB_LL.Models.Schedule schedule)
+    private async Task<bool> IsEligible(RDT_WEB_LL.Models.Schedule schedule)
     {
-        if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return true;
+        if (scheduleService.IsOnSchedule(schedule) == true && await scheduleService.IsTestTaken(schedule) == false) return true;
         return false;
     }
 
@@ -92,7 +98,7 @@
     private async void OnSubmit()
     {
         await serverTimeComponent.timer.DisposeAsync();
-        questionService.SaveUserAnswers(userAnswers);
+        await questionService.SaveUserAnswers(userAnswers);
         await JS.InvokeVoidAsync("alert", "Succesfully saved answer");
         navManager.NavigateTo("");
     }

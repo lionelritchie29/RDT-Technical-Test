@@ -11,17 +11,24 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-<div class="d-flex justify-content-between mb-4">
-    <h3>Answer Status of @user.NormalizedUserName</h3>
-    <div>
-        <button class="btn btn-primary" @onclick=@OnViewResult>View result</button>
-    </div>
-</div>
-
-@for (int i = 1; i <= answers.Count; i++)
+@if (user == null || answers == null)
 {
-    var j = i;
-    <AnswerResult answer=@answers[j-1] number=j answerCorrectStatusUpdated=@UpdateCount></AnswerResult>
+    <Loading></Loading>
+}
+else
+{
+    <div class="d-flex justify-content-between mb-4">
+        <h3>Answer Status of @user.NormalizedUserName</h3>
+        <div>
+            <button class="btn btn-primary" @onclick=@OnViewResult>View result</button>
+        </div>
+    </div>
+
+    @for (int i = 1; i <= answers.Count; i++)
+    {
+        var j = i;
+        <AnswerResult answer=@answers[j-1] number=j answerCorrectStatusUpdated=@UpdateCount></AnswerResult>
+    }
 }
 
 @code {
@@ -30,10 +37,10 @@
     public IdentityUser user { get; set; }
     public List<UserAnswer> answers { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        user = participantService.GetParticipantById(Id);
-        answers = questionService.GetUserAnswers(Id);
+        user = await participantService.GetParticipantById(Id);
+        answers = await questionService.GetUserAnswers(Id);
     }
 
     private void UpdateCount()

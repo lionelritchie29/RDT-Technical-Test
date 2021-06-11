@@ -8,6 +8,6 @@ namespace RDT_WEB_LL.Services
 {
     interface IQuestionTypeService
     {
-        public List<QuestionType> GetAll();
+        public Task<List<QuestionType>> GetAll();
     }
 }

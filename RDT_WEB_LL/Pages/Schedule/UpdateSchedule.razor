@@ -2,6 +2,7 @@
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Components
 @using Microsoft.AspNetCore.Identity
 
 @inject IParticipantService participantService
@@ -10,35 +11,41 @@
 @inject NavigationManager navigationManager
 
 
+@if (schedule == null || user == null)
+{
+    <Loading></Loading>
+}
+else
+{
+    <h3>Update Schedule for @user.UserName</h3>
 
-<h3>Update Schedule for @user.UserName</h3>
+    <div class="card primary-bg-dark">
+        <div class="card-body">
+            <form @onsubmit=@OnUpdateSchedule>
+                <div class="form-group">
+                    <label>Participant</label>
+                    <select class="form-control" disabled>
+                        <option value="">@user.UserName</option>
+                    </select>
+                </div>
 
-<div class="card primary-bg-dark">
-    <div class="card-body">
-        <form @onsubmit=@OnUpdateSchedule>
-            <div class="form-group">
-                <label>Participant</label>
-                <select class="form-control" disabled>
-                    <option value="">@user.UserName</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label>Start date and time</label>
+                    <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddMinutes(30)" Value=@StartDate ValueChanged="@(t => StartDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
+                </div>
 
-            <div class="form-group">
-                <label>Start date and time</label>
-                <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddMinutes(30)" Value=@StartDate ValueChanged="@(t => StartDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
-            </div>
+                <div class="form-group">
+                    <label>End date and time</label>
+                    <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(3)" Value="@EndDate" ValueChanged="@(t => EndDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
+                </div>
 
-            <div class="form-group">
-                <label>End date and time</label>
-                <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(3)" Value="@EndDate" ValueChanged="@(t => EndDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
-            </div>
-
-            <div class="d-flex justify-content-end">
-                <input type="submit" class="btn btn-primary" value="Update schedule" />
-            </div>
-        </form>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn btn-primary" value="Update schedule" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter]
@@ -49,10 +56,10 @@
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        schedule = scheduleService.Get(int.Parse(Id));
-        user = participantService.GetParticipantById(schedule.UserId);
+        schedule = await scheduleService.Get(int.Parse(Id));
+        user = await participantService.GetParticipantById(schedule.UserId);
 
         StartDate = schedule.startDate;
         EndDate = schedule.endDate;
@@ -64,16 +71,18 @@
         {
             schedule.startDate = StartDate;
             schedule.endDate = EndDate;
-            int status = scheduleService.Update(schedule);
+            int status = await scheduleService.Update(schedule);
             if (status > 0)
             {
                 await JS.InvokeVoidAsync("alert", "Update success!");
                 navigationManager.NavigateTo("manage/schedules");
-            } else
+            }
+            else
             {
                 await JS.InvokeVoidAsync("alert", "Oops! something is wrong when updating answer");
             }
-        } else
+        }
+        else
         {
             await JS.InvokeVoidAsync("alert", "Start date must be earlier than end date");
         }

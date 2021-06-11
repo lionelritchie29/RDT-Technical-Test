@@ -5,6 +5,7 @@
 @using RDT_WEB_LL.Services
 @using Microsoft.Extensions.Logging
 @using RDT_WEB_LL.Components.Question_Form
+@using RDT_WEB_LL.Components
 
 @inject IJSRuntime JS
 @inject IQuestionTypeService qtService
@@ -15,7 +16,11 @@
 
 <div class="card primary-bg-dark">
     <div class="card-body">
-        @if (questionTypes != null)
+        @if (questionTypes == null)
+        {
+            <Loading></Loading>
+        }
+        else
         {
             <EditForm OnSubmit=@OnNext EditContext=@editContext>
                 <ObjectGraphDataAnnotationsValidator />
@@ -94,12 +99,12 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (string.IsNullOrEmpty(Id)) return;
 
-        questionTypes = qtService.GetAll();
-        question = qService.Get(int.Parse(Id));
+        questionTypes = await qtService.GetAll();
+        question = await qService.Get(int.Parse(Id));
         FillInputField();
 
         editContext = new EditContext(model);
@@ -111,8 +116,9 @@
         model.QuestionText = question.QuestionText;
         model.QuestionTypeId = question.QuestionTypeId.ToString();
 
-        if (IsNotEssayOrFileUpload()) {
-            for (var i = 0; i< question.PossibleAnswers.Count; i++)
+        if (IsNotEssayOrFileUpload())
+        {
+            for (var i = 0; i < question.PossibleAnswers.Count; i++)
             {
                 var j = i;
                 var ans = question.PossibleAnswers[j];
@@ -164,7 +170,7 @@
         question.QuestionText = model.QuestionText;
         question.QuestionTypeId = int.Parse(model.QuestionTypeId);
         question.HasCorrectAnswer = hasCorrectAnswer;
-        qService.Update(question);
+        await qService.Update(question);
 
         List<PossibleAnswer> possibleAnswers = new List<PossibleAnswer>();
         if (hasCorrectAnswer)
@@ -174,7 +180,7 @@
                 possibleAnswers.Add(new PossibleAnswer { Answer = ans.Value, IsCorrect = ans.IsCorrect, QuestionId = question.Id });
             }
         }
-        qService.UpdateAnswers(possibleAnswers, question.Id);
+        await qService.UpdateAnswers(possibleAnswers, question.Id);
 
         clearForm();
         IsSecondStep = false;

@@ -1,44 +1,52 @@
 ﻿@page "/manage/schedules/add"
 
-@using RDT_WEB_LL.Services 
+@using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Models
+@using RDT_WEB_LL.Components
 @using Microsoft.AspNetCore.Identity
 
 @inject IParticipantService participantService
 @inject IScheduleService scheduleService
 @inject IJSRuntime JS
-@inject NavigationManager navigationManager 
+@inject NavigationManager navigationManager
 
 <h3>Add Schedule</h3>
 
 <div class="card primary-bg-dark">
     <div class="card-body">
-        <form @onsubmit=@OnAddSchedule>
-            <div class="form-group">
-                <label>Participant</label>
-                <select class="form-control" @bind=@SelectedUserId>
-                    <option value="">--- SELECT A PARTICIPANT ---</option>
-                    @foreach(var participant in notScheduledParticipants)
-                    {
-                       <option value=@participant.Id>@participant.UserName</option>
-                    }
-                </select>
-            </div>
+        @if (notScheduledParticipants == null)
+        {
+            <Loading></Loading>
+        }
+        else
+        {
+            <form @onsubmit=@OnAddSchedule>
+                <div class="form-group">
+                    <label>Participant</label>
+                    <select class="form-control" @bind=@SelectedUserId>
+                        <option value="">--- SELECT A PARTICIPANT ---</option>
+                        @foreach (var participant in notScheduledParticipants)
+                        {
+                            <option value=@participant.Id>@participant.UserName</option>
+                        }
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label>Start date and time</label>
-                <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(3)" Value=@StartDate ValueChanged="@(t => StartDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
-            </div>
+                <div class="form-group">
+                    <label>Start date and time</label>
+                    <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(3)" Value=@StartDate ValueChanged="@(t => StartDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
+                </div>
 
-            <div class="form-group">
-                <label>End date and time</label>
-                <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(6)" Value="@EndDate" ValueChanged="@(t => EndDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
-            </div>
+                <div class="form-group">
+                    <label>End date and time</label>
+                    <SfDateTimePicker TValue="DateTime" Min="@DateTime.Now.AddHours(6)" Value="@EndDate" ValueChanged="@(t => EndDate = t)" Placeholder="Choose a date time"></SfDateTimePicker>
+                </div>
 
-            <div class="d-flex justify-content-end">
-                <input type="submit" class="btn btn-primary" value="Add schedule" />
-            </div>
-        </form>
+                <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn btn-primary" value="Add schedule" />
+                </div>
+            </form>
+        }
     </div>
 </div>
 
@@ -49,9 +57,9 @@
 
     public List<IdentityUser> notScheduledParticipants { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        notScheduledParticipants = participantService.GetNotScheduled();
+        notScheduledParticipants = await participantService.GetNotScheduled();
     }
 
     private async void OnAddSchedule()
@@ -59,7 +67,7 @@
         if (Validate())
         {
             var schedule = new Schedule { startDate = StartDate, endDate = EndDate, UserId = SelectedUserId };
-            int status = scheduleService.Add(schedule);
+            int status = await scheduleService.Add(schedule);
             if (status > 0)
             {
                 await JS.InvokeVoidAsync("alert", "Succesfully added new schedule");
@@ -69,7 +77,8 @@
             {
                 await JS.InvokeVoidAsync("alert", "Something error when adding new schedule");
             }
-        } else
+        }
+        else
         {
             await JS.InvokeVoidAsync("alert", "All field must not be empty or start date must be less than end date");
         }

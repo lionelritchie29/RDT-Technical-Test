@@ -19,9 +19,9 @@ namespace RDT_WEB_LL.Services
             _questionService = questionService;
         }
 
-        public List<Schedule> GetAll()
+        public async Task<List<Schedule>> GetAll()
         {
-            return _context.Schedules.Include(s => s.User).ToList();
+            return await _context.Schedules.Include(s => s.User).ToListAsync();
         }
 
         public bool? IsNotStarted(Schedule schedule)
@@ -42,51 +42,48 @@ namespace RDT_WEB_LL.Services
             return DateTime.Compare(DateTime.Now, schedule.startDate) > 0 && DateTime.Compare(DateTime.Now, schedule.endDate) < 0;
         }
 
-        public bool? IsTestTaken(Schedule schedule)
+        public async Task<bool?> IsTestTaken(Schedule schedule)
         {
             if (schedule == null) return null;
-            List<UserAnswer> userAnswers = _questionService.GetAnswersByUserId(schedule.UserId);
+            List<UserAnswer> userAnswers = await _questionService.GetAnswersByUserId(schedule.UserId);
             return userAnswers.Count > 0;
         }
 
-        public int Add(Schedule schedule)
+        public async Task<int> Add(Schedule schedule)
         {
             _context.Schedules.Add(schedule);
-            int status = _context.SaveChanges();
-            return status;
+            return await _context.SaveChangesAsync();
         }
 
-        public int Delete(Schedule schedule)
+        public async Task<int> Delete(Schedule schedule)
         {
             _context.Schedules.Remove(schedule);
-            int status = _context.SaveChanges();
-            return status;
+            return await _context.SaveChangesAsync();
         }
 
-        public Schedule Get(int scheduleId)
+        public async Task<Schedule> Get(int scheduleId)
         {
-            return _context.Schedules.Where(s => s.Id == scheduleId).FirstOrDefault();
+            return await _context.Schedules.Where(s => s.Id == scheduleId).FirstOrDefaultAsync();
         }
 
-        public int Update(Schedule schedule)
+        public async Task<int> Update(Schedule schedule)
         {
             _context.Schedules.Update(schedule);
-            int status = _context.SaveChanges();
-            return status;
+            return await _context.SaveChangesAsync();
         }
 
-        public Schedule GetByUserId(string userId)
+        public async Task<Schedule> GetByUserId(string userId)
         {
-            return _context.Schedules.Where(s => s.UserId == userId).FirstOrDefault();
+            return await _context.Schedules.Where(s => s.UserId == userId).FirstOrDefaultAsync();
         }
 
-        public string GetStatus(Schedule schedule, ScheduleStatus status)
+        public async Task<string> GetStatus(Schedule schedule, ScheduleStatus status)
         {
             if (IsNotStarted(schedule) == true) return status.IsNotStarted;
-            else if (IsOnSchedule(schedule) == true && IsTestTaken(schedule) == true) return status.OnGoingAndTaken;
-            else if (IsOnSchedule(schedule) == true && IsTestTaken(schedule) == false) return status.OnGoingAndNotTaken;
-            else if (IsDone(schedule) == true && IsTestTaken(schedule) == false) return status.PassDeadlineAndNotTaken;
-            else if (IsDone(schedule) == true && IsTestTaken(schedule) == true) return status.PassDeadlineAndTaken;
+            else if (IsOnSchedule(schedule) == true && await IsTestTaken(schedule) == true) return status.OnGoingAndTaken;
+            else if (IsOnSchedule(schedule) == true && await IsTestTaken(schedule) == false) return status.OnGoingAndNotTaken;
+            else if (IsDone(schedule) == true && await IsTestTaken (schedule) == false) return status.PassDeadlineAndNotTaken;
+            else if (IsDone(schedule) == true && await IsTestTaken (schedule) == true) return status.PassDeadlineAndTaken;
             return "";
         }
     }

@@ -16,20 +16,20 @@ namespace RDT_WEB_LL.Services
             _context = context;
         }
 
-        public List<IdentityUser> GetAll()
+        public async Task<List<IdentityUser>> GetAll()
         {
-            List<IdentityUser> participants = (
+            var participants = await (
                 from u in _context.Users
                 join ur in _context.UserRoles on u.Id equals ur.UserId
                 join r in _context.Roles on ur.RoleId equals r.Id
                 where r.Id == "participant"
-                select u).ToList();
+                select u).ToListAsync();
             return participants;
         }
 
-        public List<IdentityUser> GetNotScheduled()
+        public async Task<List<IdentityUser>> GetNotScheduled()
         {
-            List<IdentityUser> participants = (
+            List<IdentityUser> participants = await (
                 from u in _context.Users
                 join ur in _context.UserRoles on u.Id equals ur.UserId
                 join r in _context.Roles on ur.RoleId equals r.Id
@@ -38,24 +38,23 @@ namespace RDT_WEB_LL.Services
                     from sc in _context.Schedules
                     select sc.UserId
                 ).Contains(u.Id)
-                select u).ToList();
+                select u).ToListAsync();
             return participants;
         }
 
-        public IdentityUser GetParticipantById(string userId)
+        public async Task<IdentityUser> GetParticipantById(string userId)
         {
-            return _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+            return await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
         }
 
-        public int Delete(IdentityUser participant)
+        public async Task<int> Delete(IdentityUser participant)
         {
             _context.Users.Remove(participant);
 
-            var relatedSchedule =_context.Schedules.Where(s => s.UserId == participant.Id).FirstOrDefault(); ;
+            var relatedSchedule =await _context.Schedules.Where(s => s.UserId == participant.Id).FirstOrDefaultAsync(); ;
             _context.Schedules.Remove(relatedSchedule);
 
-            int status = _context.SaveChanges();
-            return status;
+            return await _context.SaveChangesAsync();
         }
     }
 }

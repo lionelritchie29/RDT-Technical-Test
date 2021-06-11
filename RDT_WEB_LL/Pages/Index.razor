@@ -39,11 +39,11 @@
             }
             else
             {
-        <ul class="list-group">
-            <li class="list-group-item primary-bg-light-dark">Start Date: @currentParticipantSchedule.startDate</li>
-            <li class="list-group-item primary-bg-light-dark">End Date: @currentParticipantSchedule.endDate</li>
-            <li class="list-group-item @(GetStatusClass())">Status: @(GetStatus())</li>
-        </ul>
+                <ul class="list-group">
+                    <li class="list-group-item primary-bg-light-dark">Start Date: @currentParticipantSchedule.startDate</li>
+                    <li class="list-group-item primary-bg-light-dark">End Date: @currentParticipantSchedule.endDate</li>
+                    <li class="list-group-item @(StatusClass)">Status: @(Status)</li>
+                </ul>
             }
         </div>
     </div>
@@ -52,6 +52,8 @@
 @code {
     public RDT_WEB_LL.Models.Schedule currentParticipantSchedule { get; set; }
     public string currentUserId { get; set; }
+    public string Status { get; set; } = "";
+    public string StatusClass { get; set; } = "";
 
     private ScheduleStatus status = new ScheduleStatus
     {
@@ -71,22 +73,24 @@
         PassDeadlineAndNotTaken = "list-group-item-danger"
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         currentUserId = authService.GetCurrentUserId();
         if (currentUserId != null)
         {
-            currentParticipantSchedule = scheduleService.GetByUserId(currentUserId);
+            currentParticipantSchedule = await scheduleService.GetByUserId(currentUserId);
+            Status = await GetStatus();
+            StatusClass = await GetStatusClass();
         }
     }
 
-    private string GetStatus()
+    private async Task<string> GetStatus()
     {
-        return scheduleService.GetStatus(currentParticipantSchedule, status);
+        return await scheduleService.GetStatus(currentParticipantSchedule, status);
     }
 
-    private string GetStatusClass()
+    private async Task<string> GetStatusClass()
     {
-        return scheduleService.GetStatus(currentParticipantSchedule, statusClass);
+        return await scheduleService.GetStatus(currentParticipantSchedule, statusClass);
     }
 }

@@ -20,24 +20,78 @@
 </div>
 
 <div class="row">
-    @foreach (var schedule in schedules)
+    @if (schedules == null)
     {
-        <div class="col-12" @key=@schedule>
-            <ScheduleCard schedule=@schedule OnDeleteCallback=RemoveDeletedScheduleFromList></ScheduleCard>
-        </div>
+        <Loading></Loading>
+    }
+    else
+    {
+        @for (var i = 0; i < schedules.Count; i++)
+        {
+            var j = i;
+            <div class="col-12" @key=@schedules[j]>
+                <ScheduleCard schedule=@schedules[j] Status=@statuses[j] ShouldShowBtn=@shouldShowBtnList[j] StatusClass=@statusClasses[j] OnDeleteCallback=RemoveDeletedScheduleFromList></ScheduleCard>
+            </div>
+        }
     }
 </div>
 
 @code {
     public List<Schedule> schedules { get; set; }
+    public List<string> statuses { get; set; }
+    public List<string> statusClasses { get; set; }
+    public List<bool> shouldShowBtnList { get; set; }
 
-    protected override void OnInitialized()
+    private ScheduleStatus status = new ScheduleStatus
     {
-        schedules = scheduleService.GetAll();
+        IsNotStarted = "Not yet started",
+        OnGoingAndNotTaken = "On going and not yet taken",
+        OnGoingAndTaken = "On going and has been taken",
+        PassDeadlineAndTaken = "Passed deadline and has been taken",
+        PassDeadlineAndNotTaken = "Passed deadline but not yet taken"
+    };
+
+    private ScheduleStatus statusClass = new ScheduleStatus
+    {
+        IsNotStarted = "badge-secondary",
+        OnGoingAndNotTaken = "badge-primary",
+        OnGoingAndTaken = "badge-success",
+        PassDeadlineAndTaken = "badge-success",
+        PassDeadlineAndNotTaken = "badge-danger"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        schedules = await scheduleService.GetAll();
+        statuses = new List<string>();
+        statusClasses = new List<string>();
+        shouldShowBtnList = new List<bool>();
+
+        foreach (var schedule in schedules)
+        {
+            statuses.Add(await GetStatus(schedule));
+            statusClasses.Add(await GetStatusBadgeClass(schedule));
+            shouldShowBtnList.Add(await ShouldShowUpdateDeleteBtn(schedule));
+        }
     }
 
     private void RemoveDeletedScheduleFromList(Schedule schedule)
     {
         schedules.Remove(schedule);
+    }
+
+    private async Task<bool> ShouldShowUpdateDeleteBtn(Schedule schedule)
+    {
+        return (scheduleService.IsNotStarted(schedule) == true || (scheduleService.IsOnSchedule(schedule) == true && await scheduleService.IsTestTaken(schedule) == false));
+    }
+
+    private async Task<string> GetStatus(Schedule schedule)
+    {
+        return await scheduleService.GetStatus(schedule, status);
+    }
+
+    private async Task<string> GetStatusBadgeClass(Schedule schedule)
+    {
+        return await scheduleService.GetStatus(schedule, statusClass);
     }
 }
