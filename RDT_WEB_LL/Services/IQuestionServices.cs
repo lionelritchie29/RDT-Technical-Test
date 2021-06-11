@@ -10,7 +10,7 @@ namespace RDT_WEB_LL.Services
     {
         public Task<List<Question>> GetAll();
         public Task<Question> Get(int questionid);
-        public int Add(Question newQuestion);
+        public Task<int> Add(Question newQuestion);
         public Task<int> Update(Question question);
         public Task<int> AddAnswers(List<PossibleAnswer> answers);
         public Task<int> UpdateAnswers(List<PossibleAnswer> answers, int questionId);

@@ -10,6 +10,8 @@
 @inject IJSRuntime JS
 @inject NavigationManager navigationManager
 
+@attribute [Authorize(Roles = "Admin")]
+
 <h3>Add Schedule</h3>
 
 <div class="card primary-bg-dark">

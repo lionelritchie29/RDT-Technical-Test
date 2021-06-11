@@ -24,10 +24,10 @@ namespace RDT_WEB_LL.Services
             return await _context.Questions.Include(q => q.PossibleAnswers).Where(q => q.Id == questionid).FirstOrDefaultAsync();
         }
 
-        public int Add(Question newQuestion)
+        public async Task<int> Add(Question newQuestion)
         {
             _context.Questions.Add(newQuestion);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return newQuestion.Id;
         }
 

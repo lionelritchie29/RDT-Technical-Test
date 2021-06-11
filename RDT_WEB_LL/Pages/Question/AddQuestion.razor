@@ -12,7 +12,6 @@
 @inject IQuestionServices qService
 @inject NavigationManager NavigationManager
 
-
 <h3>Add New Question</h3>
 
 <div class="card primary-bg-dark">
@@ -146,7 +145,7 @@
             HasCorrectAnswer = hasCorrectAnswer
         };
 
-        int insertedQuestionId = qService.Add(newQuestion);
+        int insertedQuestionId = await qService.Add(newQuestion);
 
         if (hasCorrectAnswer)
         {

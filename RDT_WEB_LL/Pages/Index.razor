@@ -42,6 +42,7 @@
                 <ul class="list-group">
                     <li class="list-group-item primary-bg-light-dark">Start Date: @currentParticipantSchedule.startDate</li>
                     <li class="list-group-item primary-bg-light-dark">End Date: @currentParticipantSchedule.endDate</li>
+                    <li class="list-group-item primary-bg-light-dark">Taken on: @(currentParticipantSchedule.TakenOn == null ? "Not taken yet" : currentParticipantSchedule.TakenOn)</li>
                     <li class="list-group-item @(StatusClass)">Status: @(Status)</li>
                 </ul>
             }
