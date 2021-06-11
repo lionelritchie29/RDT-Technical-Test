@@ -65,7 +65,7 @@
 
 @if (IsSecondStep)
 {
-    <QuestionFormUpdateChooseCorrectAnswer Model=@model CorrectAnswerIdx=@correctAnswerIdx OnAddQuestion=@AddNewQuestion />
+    <QuestionFormUpdateChooseCorrectAnswer Model=@model CorrectAnswerIdx=@correctAnswerIdx OnUpdateQuestion=@OnUpdateQuestion />
 }
 
 @code {
@@ -151,38 +151,34 @@
     {
         if (IsBoolean())
         {
-            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "False" });
-            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "True" });
+            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "False", IsCorrect = false });
+            model.PossibleAnswers.Add(new PossibleAnswerFormModel { Value = "True", IsCorrect = false });
         }
     }
 
-    private void AddNewQuestion()
+    private async void OnUpdateQuestion()
     {
         if (string.IsNullOrEmpty(model.QuestionTypeId)) return;
         var hasCorrectAnswer = IsNotEssayOrFileUpload();
+
+        question.QuestionText = model.QuestionText;
+        question.QuestionTypeId = int.Parse(model.QuestionTypeId);
+        question.HasCorrectAnswer = hasCorrectAnswer;
+        qService.Update(question);
+
         List<PossibleAnswer> possibleAnswers = new List<PossibleAnswer>();
-
-        var newQuestion = new Question
-        {
-            QuestionText = model.QuestionText,
-            QuestionTypeId = int.Parse(model.QuestionTypeId),
-            HasCorrectAnswer = hasCorrectAnswer
-        };
-
-        int insertedQuestionId = qService.Add(newQuestion);
-
         if (hasCorrectAnswer)
         {
             foreach (var ans in model.PossibleAnswers)
             {
-                possibleAnswers.Add(new PossibleAnswer { Answer = ans.Value, IsCorrect = false, QuestionId = insertedQuestionId });
+                possibleAnswers.Add(new PossibleAnswer { Answer = ans.Value, IsCorrect = ans.IsCorrect, QuestionId = question.Id });
             }
-            qService.AddAnswers(possibleAnswers);
         }
+        qService.UpdateAnswers(possibleAnswers, question.Id);
 
         clearForm();
         IsSecondStep = false;
-        JS.InvokeVoidAsync("alert", "Succesfully added new question");
+        await JS.InvokeVoidAsync("alert", "Succesfully updated this question");
         NavigationManager.NavigateTo("manage/questions");
     }
 

@@ -11,7 +11,9 @@ namespace RDT_WEB_LL.Services
         public List<Question> GetAll();
         public Question Get(int questionid);
         public int Add(Question newQuestion);
+        public int Update(Question question);
         public int AddAnswers(List<PossibleAnswer> answers);
+        public int UpdateAnswers(List<PossibleAnswer> answers, int questionId);
         public int SaveUserAnswers(List<UserAnswer> answers);
         public List<UserAnswer> GetUserAnswers(string userId);
         public int Delete(Question question);

@@ -40,7 +40,7 @@
     public int CorrectAnswerIdx { get; set; } //for update
 
     [Parameter]
-    public EventCallback OnAddQuestion { get; set; }
+    public EventCallback OnUpdateQuestion { get; set; }
 
     public string SelectedCorrectAnsIdx { get; set; }
 
@@ -61,7 +61,7 @@
     {
         if (IsEssayOrFileUpload())
         {
-            await OnAddQuestion.InvokeAsync();
+            await OnUpdateQuestion.InvokeAsync();
         }
         else
         {
@@ -71,10 +71,16 @@
             }
             else
             {
+                ResetCorrectAnswer();
                 var idx = int.Parse(SelectedCorrectAnsIdx);
                 Model.PossibleAnswers[idx].IsCorrect = true;
-                await OnAddQuestion.InvokeAsync();
+                await OnUpdateQuestion.InvokeAsync();
             }
         }
+    }
+
+    private void ResetCorrectAnswer()
+    {
+        Model.PossibleAnswers.ForEach(ans => ans.IsCorrect = false);
     }
 }

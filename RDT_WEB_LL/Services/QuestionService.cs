@@ -32,6 +32,22 @@ namespace RDT_WEB_LL.Services
             return newQuestion.Id;
         }
 
+        public int Update(Question question)
+        {
+            _context.Questions.Update(question);
+            int status = _context.SaveChanges();
+            return status;
+        }
+        public int UpdateAnswers(List<PossibleAnswer> answers, int questionId)
+        {
+            var oldAnswers = _context.PossibleAnswers.Where(ans => ans.QuestionId == questionId).ToList();
+            _context.PossibleAnswers.RemoveRange(oldAnswers);
+            _context.PossibleAnswers.AddRange(answers);
+            
+            int status = _context.SaveChanges();
+            return status;
+        }
+
         public int AddAnswers(List<PossibleAnswer> answers)
         {
             _context.PossibleAnswers.AddRange(answers.ToArray());
