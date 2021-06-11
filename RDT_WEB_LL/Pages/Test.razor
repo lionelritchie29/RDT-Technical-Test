@@ -1,72 +1,85 @@
 ﻿@page "/test"
 
-@attribute [Authorize(Roles = "Admin, Participant")]
+@attribute [Authorize(Roles = "Participant")]
 
 @using System.Threading
 
 @inject IQuestionServices questionService
-@inject RDT_WEB_LL.Data.ApplicationDbContext context
 @inject IAuthService authService
+@inject IScheduleService scheduleService
+@inject NavigationManager navManager
 @inject IJSRuntime JS
 
 @using RDT_WEB_LL.Services
 @using RDT_WEB_LL.Components
 @using RDT_WEB_LL.Models
 
-<div class="d-flex justify-content-between">
-    <h3>Nationality test</h3>
-    <div>
-        @ServerTime
-    </div>
-</div>
-
-<section class="container-fluid">
-    <form>
-        @for (var i = 0; i < questions.Count(); i++)
-        {
-            var j = i;
-            int idx = AddNewAnswerToList(questions[i].Id);
-            <QuestionCard question=@questions[j]>
-                <p>@(j+1).  @questions[j].QuestionText</p>
-                <QuestionCardAnswer question=@questions[j] @bind-userAnswer=@userAnswers[idx]></QuestionCardAnswer>
-            </QuestionCard>
-        }
-
-        <div class="d-flex justify-content-end mb-5">
-            <button type="submit" class="btn btn-success" @onclick=@OnSubmit @onclick:preventDefault="true">Submit my answer</button>
+@if (questions != null)
+{
+    <div class="d-flex justify-content-between">
+        <h3>Nationality test</h3>
+        <div>
+            <ServerTime @ref="serverTimeComponent"/>
         </div>
-    </form>
-</section>
+    </div>
+
+    <section class="container-fluid">
+        <form>
+            @for (var i = 0; i < questions.Count(); i++)
+            {
+                var j = i;
+                int idx = AddNewAnswerToList(questions[i].Id);
+                <QuestionCard question=@questions[j]>
+                    <p>@(j+1).  @questions[j].QuestionText</p>
+                    <QuestionCardAnswer question=@questions[j] @bind-userAnswer=@userAnswers[idx]></QuestionCardAnswer>
+                </QuestionCard>
+            }
+
+            <div class="d-flex justify-content-end mb-5">
+                <button type="submit" class="btn btn-success" @onclick=@OnSubmit @onclick:preventDefault="true">Submit my answer</button>
+            </div>
+        </form>
+    </section>
+}
 
 @code {
     public List<RDT_WEB_LL.Models.Question> questions { get; set; }
     public List<UserAnswer> userAnswers { get; set; }
-    public DateTime ServerTime { get; set; }
-
-    private Timer timer;
+    private ServerTime serverTimeComponent;
 
     protected override void OnInitialized()
     {
-        ServerTime = DateTime.Now;
-        questions = questionService.GetAll();
-        userAnswers = new List<UserAnswer>();
-
-        StartTimer();
-    }
-
-    private void StartTimer()
-    {
-        var autoEvent = new AutoResetEvent(false);
-        timer = new Timer((e) => IncrementTime(), autoEvent, 0, 1000);
-    }
-
-    private void IncrementTime()
-    {
-        InvokeAsync(() =>
+        if (Authenticate())
         {
-            ServerTime = DateTime.Now;
-            StateHasChanged();
-        });
+            questions = questionService.GetAll();
+            userAnswers = new List<UserAnswer>();
+        }
+        else
+        {
+            JS.InvokeVoidAsync("alert", "You are not authorized or not eligible to take the test");
+            navManager.NavigateTo("");
+        }
+    }
+
+    private bool Authenticate()
+    {
+        var currentUserId = authService.GetCurrentUserId();
+        if (currentUserId == null)
+        {
+            return false;
+        }
+        else
+        {
+            var schedule = scheduleService.GetByUserId(currentUserId);
+            if (IsEligible(schedule)) return true;
+            return false;
+        }
+    }
+
+    private bool IsEligible(RDT_WEB_LL.Models.Schedule schedule)
+    {
+        if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return true;
+        return false;
     }
 
     private int AddNewAnswerToList(int questionid)
@@ -78,9 +91,8 @@
 
     private async void OnSubmit()
     {
-        await timer.DisposeAsync();
+        await serverTimeComponent.timer.DisposeAsync();
         questionService.SaveUserAnswers(userAnswers);
         await JS.InvokeVoidAsync("alert", "Succesfully saved answer");
-
     }
 }
