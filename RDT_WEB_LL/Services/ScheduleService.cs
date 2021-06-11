@@ -74,5 +74,20 @@ namespace RDT_WEB_LL.Services
             int status = _context.SaveChanges();
             return status;
         }
+
+        public Schedule GetByUserId(string userId)
+        {
+            return _context.Schedules.Where(s => s.UserId == userId).FirstOrDefault();
+        }
+
+        public string GetStatus(Schedule schedule, ScheduleStatus status)
+        {
+            if (IsNotStarted(schedule) == true) return status.IsNotStarted;
+            else if (IsOnSchedule(schedule) == true && IsTestTaken(schedule) == true) return status.OnGoingAndTaken;
+            else if (IsOnSchedule(schedule) == true && IsTestTaken(schedule) == false) return status.OnGoingAndNotTaken;
+            else if (IsDone(schedule) == true && IsTestTaken(schedule) == false) return status.PassDeadlineAndNotTaken;
+            else if (IsDone(schedule) == true && IsTestTaken(schedule) == true) return status.PassDeadlineAndTaken;
+            return "";
+        }
     }
 }

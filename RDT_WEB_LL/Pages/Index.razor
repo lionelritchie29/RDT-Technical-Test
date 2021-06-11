@@ -1,5 +1,92 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using RDT_WEB_LL.Services
+@using RDT_WEB_LL.Models
 
-Welcome to your new app.
+@inject IScheduleService scheduleService
+@inject IAuthService authService
+
+
+@if (currentUserId == null)
+{
+    <div class="jumbotron primary-bg-dark">
+        <h1 class="display-4">Hello, Guest!</h1>
+        <hr class="my-4">
+        <p>Please login first.</p>
+    </div>
+}
+
+<AuthorizeView Roles="Admin">
+    <div class="jumbotron primary-bg-dark">
+        <h1 class="display-4">Hello, Admin!</h1>
+        <hr class="my-4">
+        <p>You can manage question, schedule, and participant from this app.</p>
+    </div>
+</AuthorizeView>
+<AuthorizeView Roles="Participant">
+    <div class="jumbotron primary-bg-dark">
+        <h1 class="display-4">Hello, Participant!</h1>
+        <hr class="my-4">
+        <p>Make sure you are on schedule to take the test.</p>
+    </div>
+
+    <h4 class="mt-4">Your schedule</h4>
+    <div class="card primary-bg-dark">
+        <div class="card-body">
+            @if (currentParticipantSchedule == null)
+            {
+                <p>You are not scheduled yet.</p>
+            }
+            else
+            {
+        <ul class="list-group">
+            <li class="list-group-item primary-bg-light-dark">Start Date: @currentParticipantSchedule.startDate</li>
+            <li class="list-group-item primary-bg-light-dark">End Date: @currentParticipantSchedule.endDate</li>
+            <li class="list-group-item @(GetStatusClass())">Status: @(GetStatus())</li>
+        </ul>
+            }
+        </div>
+    </div>
+</AuthorizeView>
+
+@code {
+    public RDT_WEB_LL.Models.Schedule currentParticipantSchedule { get; set; }
+    public string currentUserId { get; set; }
+
+    private ScheduleStatus status = new ScheduleStatus
+    {
+        IsNotStarted = "Your test is not yet started",
+        OnGoingAndNotTaken = "Your test is on schedule, please consider taking it now",
+        OnGoingAndTaken = "You have finished the test",
+        PassDeadlineAndTaken = "You have finished the test",
+        PassDeadlineAndNotTaken = "You missed the test"
+    };
+
+    private ScheduleStatus statusClass = new ScheduleStatus
+    {
+        IsNotStarted = "list-group-item-secondary",
+        OnGoingAndNotTaken = "list-group-item-primary",
+        OnGoingAndTaken = "list-group-item-success",
+        PassDeadlineAndTaken = "list-group-item-success",
+        PassDeadlineAndNotTaken = "list-group-item-danger"
+    };
+
+    protected override void OnInitialized()
+    {
+        currentUserId = authService.GetCurrentUserId();
+        if (currentUserId != null)
+        {
+            currentParticipantSchedule = scheduleService.GetByUserId(currentUserId);
+        }
+    }
+
+    private string GetStatus()
+    {
+        return scheduleService.GetStatus(currentParticipantSchedule, status);
+    }
+
+    private string GetStatusClass()
+    {
+        return scheduleService.GetStatus(currentParticipantSchedule, statusClass);
+    }
+}

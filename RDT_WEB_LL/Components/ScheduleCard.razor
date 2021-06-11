@@ -37,6 +37,24 @@
     [Parameter]
     public EventCallback<Schedule> OnDeleteCallback { get; set; }
 
+    private ScheduleStatus status = new ScheduleStatus
+    {
+        IsNotStarted = "Not yet started",
+        OnGoingAndNotTaken = "On going and not yet taken",
+        OnGoingAndTaken = "On going and has been taken",
+        PassDeadlineAndTaken = "Passed deadline and has been taken",
+        PassDeadlineAndNotTaken = "Passed deadline but not yet taken"
+    };
+
+    private ScheduleStatus statusClass = new ScheduleStatus
+    {
+        IsNotStarted = "badge-secondary",
+        OnGoingAndNotTaken = "badge-primary",
+        OnGoingAndTaken = "badge-success",
+        PassDeadlineAndTaken = "badge-success",
+        PassDeadlineAndNotTaken = "badge-danger"
+    };
+
     private bool ShouldShowUpdateDeleteBtn(Schedule schedule)
     {
         return scheduleService.IsNotStarted(schedule) == true || (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false);
@@ -44,22 +62,12 @@
 
     private string GetStatus(Schedule schedule)
     {
-        if (scheduleService.IsNotStarted(schedule) == true) return "Not yet started";
-        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "On going and already taken";
-        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "On going but not yet taken";
-        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "Passed deadline but not yet taken";
-        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "Passed deadline and already taken";
-        return "";
+        return scheduleService.GetStatus(schedule, status);
     }
 
     private string GetStatusBadgeClass(Schedule schedule)
     {
-        if (scheduleService.IsNotStarted(schedule) == true) return "badge-secondary";
-        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
-        else if (scheduleService.IsOnSchedule(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "badge-primary";
-        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == false) return "badge-danger";
-        else if (scheduleService.IsDone(schedule) == true && scheduleService.IsTestTaken(schedule) == true) return "badge-success";
-        return "";
+        return scheduleService.GetStatus(schedule, statusClass);
     }
 
     private async void OnDelete()

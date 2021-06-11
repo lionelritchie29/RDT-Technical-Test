@@ -10,6 +10,7 @@ namespace RDT_WEB_LL.Services
     {
         public List<Schedule> GetAll();
         public Schedule Get(int scheduleId);
+        public Schedule GetByUserId(string userId);
         public bool? IsNotStarted(Schedule schedule);
         public bool? IsDone(Schedule schedule);
         public bool? IsOnSchedule(Schedule schedule);
@@ -17,5 +18,6 @@ namespace RDT_WEB_LL.Services
         public int Add(Schedule schedule);
         public int Delete(Schedule schedule);
         public int Update(Schedule schedule);
+        public string GetStatus(Schedule schedule, ScheduleStatus status);
     }
 }

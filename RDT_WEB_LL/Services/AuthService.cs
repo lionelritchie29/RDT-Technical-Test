@@ -17,7 +17,12 @@ namespace RDT_WEB_LL.Services
 
         public string GetCurrentUserId()
         {
-            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (_httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ){
+                return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            } else
+            {
+                return null;
+            }
         }
     }
 }
