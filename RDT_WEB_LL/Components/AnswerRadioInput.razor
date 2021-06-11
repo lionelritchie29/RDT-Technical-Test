@@ -1,5 +1,7 @@
 ﻿@using RDT_WEB_LL.Models
 
+@inject IJSRuntime JS
+
 @for (var i = 0; i < answers.Count(); i++)
 {
     var j = i;
@@ -34,7 +36,8 @@
 
     protected override void OnInitialized()
     {
-        if (userAnswer != null)
+        JS.InvokeVoidAsync("console.log", answers);
+        if (userAnswer != null && answers.Count > 0)
         {
             inputName = answers[0].QuestionId.ToString();
             userAnswer.Answer = answers[0].Answer;

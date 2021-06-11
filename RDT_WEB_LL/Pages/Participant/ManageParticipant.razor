@@ -103,17 +103,21 @@ else
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-            int status = await participantService.Delete(participant);
-            if (status > 0)
+            if (participant != null)
             {
-                await JS.InvokeVoidAsync("alert", "Delete success");
-                participants.Remove(participant);
+                await JS.InvokeVoidAsync("console.log", participant);
+                int status = await participantService.Delete(participant);
+                if (status > 0)
+                {
+                    await JS.InvokeVoidAsync("alert", "Delete success");
+                    participants.Remove(participant);
+                    StateHasChanged();
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "Error when delete user");
+                }
             }
-            else
-            {
-                await JS.InvokeVoidAsync("alert", "Error when delete user");
-            }
-
         }
     }
 }

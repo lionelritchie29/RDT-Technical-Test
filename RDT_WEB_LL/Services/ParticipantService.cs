@@ -51,8 +51,11 @@ namespace RDT_WEB_LL.Services
         {
             _context.Users.Remove(participant);
 
-            var relatedSchedule =await _context.Schedules.Where(s => s.UserId == participant.Id).FirstOrDefaultAsync(); ;
-            _context.Schedules.Remove(relatedSchedule);
+            var relatedSchedule =await _context.Schedules.Where(s => s.UserId == participant.Id).FirstOrDefaultAsync();
+            if (relatedSchedule != null)
+            {
+                _context.Schedules.Remove(relatedSchedule);
+            }
 
             return await _context.SaveChangesAsync();
         }

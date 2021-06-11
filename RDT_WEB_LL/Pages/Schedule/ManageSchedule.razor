@@ -78,6 +78,7 @@
     private void RemoveDeletedScheduleFromList(Schedule schedule)
     {
         schedules.Remove(schedule);
+        StateHasChanged();
     }
 
     private async Task<bool> ShouldShowUpdateDeleteBtn(Schedule schedule)

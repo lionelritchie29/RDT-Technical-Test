@@ -12,6 +12,8 @@
 @inject IQuestionServices qService
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Admin")]
+
 <h3>Add New Question</h3>
 
 <div class="card primary-bg-dark">

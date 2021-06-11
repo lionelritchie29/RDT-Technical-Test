@@ -12,6 +12,8 @@
 @inject IQuestionServices qService
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Admin")]
+
 <h3>Update Question ID: @Id</h3>
 
 <div class="card primary-bg-dark">
