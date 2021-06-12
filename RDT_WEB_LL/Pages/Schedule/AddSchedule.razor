@@ -53,8 +53,8 @@
 </div>
 
 @code {
-    public DateTime StartDate { get; set; } = DateTime.Now.AddHours(3);
-    public DateTime EndDate { get; set; } = DateTime.Now.AddHours(6);
+    public DateTime StartDate { get; set; } = DateTime.Now;
+    public DateTime EndDate { get; set; } = DateTime.Now.AddHours(3);
     public string SelectedUserId { get; set; }
 
     public List<IdentityUser> notScheduledParticipants { get; set; }
